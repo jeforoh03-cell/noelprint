@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="id"><head>
 <meta charset="UTF-8">
+<script id="invitation-entry">
+(function(){
+  // Every new visit begins at the cover, including older links to the content.
+  try {
+    if('scrollRestoration' in history) history.scrollRestoration='manual';
+    if(location.hash) history.replaceState(history.state,'',location.pathname+location.search);
+  } catch(e) {}
+  window.addEventListener('pageshow',function(event){
+    if(event.persisted && typeof window.showInvitationCover==='function') window.showInvitationCover();
+  });
+})();
+</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FDF4F2">
 <title>Undangan Ulang Tahun — Jesslyn Imanuella Faith Lintong</title>
@@ -347,10 +360,10 @@ body>main>section .title,body>main>section .eyebrow,body>main>section .lead{
 }
 </style>
 <style id="opening-fallback">
-body:has(#pembuka:target){overflow:auto;height:auto}
-body:has(#pembuka:target) #gate{display:none!important}
-body:has(#pembuka:target) .rv{opacity:1;transform:none}
-body:has(#pembuka:target) .navbar{transform:translateX(-50%) translateY(0)}
+body:not(.interactive):has(#pembuka:target){overflow:auto;height:auto}
+body:not(.interactive):has(#pembuka:target) #gate{display:none!important}
+body:not(.interactive):has(#pembuka:target) .rv{opacity:1;transform:none}
+body:not(.interactive):has(#pembuka:target) .navbar{transform:translateX(-50%) translateY(0)}
 </style>
 <noscript><style>#editLaunch,.fabs{display:none!important}body.locked{overflow:auto;height:auto}.rv{opacity:1!important;transform:none!important}</style></noscript>
 <style id="iphone-compatibility">
@@ -507,7 +520,7 @@ body.opened #gate{display:none!important}
           Buka Undangan
         </a>
       </div>
-      <p class="eyebrow" style="margin-top:20px;opacity:.8">✿ Mohon aktifkan suara untuk pengalaman terbaik ✿</p>
+      <p class="eyebrow" style="margin-top:20px;opacity:.8">✿ Ketuk Buka Undangan untuk memutar musik ✿</p>
     </div>
   </div>
 </div>
@@ -745,7 +758,7 @@ body.opened #gate{display:none!important}
   <a href="#ucapan" data-target="ucapan" class=""><svg><use href="#i-chat"></use></svg>Ucapan</a>
 </nav>
 
-<audio id="music" loop="" preload="none" src="assets/musik.mp3"></audio>
+<audio id="music" loop="" preload="metadata" src="assets/musik.mp3"></audio>
 <script>function escapeText(v){return String(v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}</script>
 <script id="invite-data" type="application/json">{"namaAnak":"Jesslyn Imanuella Faith Lintong","panggilan":"Bapak / Ibu / Saudara/i","namaAnakShort":"Jesslyn","usiaKe":"1","orangtua":"Papa Denis Lintong &amp; Mama Sherina Mongilala","quote":"Setiap tahun adalah anugerah, setiap tawa adalah doa yang terkabul.","tahunTeks":"2026","fotoUtama":"assets/f1.jpeg","fotoWajah":"assets/f5.jpeg","tanggalISO":"2026-11-01T15:00:00+08:00","tanggalSelesaiISO":"","hariTanggal":"Minggu, 1 November 2026","jam":"15.00 WITA","catatanWaktu":"Acara bersifat ramah anak (kids friendly)","namaTempat":"DOMINIC FURNITURE &amp; INTERIOR","alamat":"Leilem 3 Jaga 1, belakang Warung Vibra, Jalan Raya, Kabupaten Minahasa, Sulawesi Utara 95691","maps":"https://maps.app.goo.gl/ZdrHnYuSuPsRi2w47?g_st=iwb","tema":"PUTIH","dresscode":"PUTIH","pembukaSalam":"Salam Sejahtera","pembukaTeks":"Halo teman-teman! 🎈 Aku Jesslyn mau merayakan ulang tahunku yang ke-1. Yuk, datang ke pestaku!","penutupTeks":"Ditunggu kehadirannya ya! Jangan lupa konfirmasi di Formulir konfirmasi kehadiran (RSVP) di atas. Sampai jumpa di pesta! 🎉","penutupNama":"Keluarga Lintong &ndash; Mongilala","batasKonfirmasi":"","waNomor":"6289698567184","linkUndangan":"","tampilHadiah":false,"tampilGaleri":true,"musikAktif":true,"rundown":[{"jam":"15.00 – 15.15","judul":"🎈 Penyambutan Tamu","ket":"Welcome to the Party!"},{"jam":"15.15 – 15.25","judul":"🎤 Pembukaan Acara","ket":"Let's Start the Celebration!"},{"jam":"15.25 – 15.40","judul":"🙏 Ibadah Doa & Ucapan Syukur","ket":"Blessings for Jesslyn"},{"jam":"15.40 – 16.00","judul":"🎂 Tiup Lilin & Potong Kue","ket":"Happy 1st Birthday!"},{"jam":"16.00 – 16.30","judul":"🎁 Games & Doorprize","ket":"Fun Time Together!"},{"jam":"16.30 – 17.00","judul":"📸 Foto Bersama & Ramah Tamah","ket":"Capture the Sweet Moments!"},{"jam":"17.00","judul":"💝 Penutupan","ket":"Thank You for Coming!"}],"galeri":[{"foto":"assets/f2.jpeg","judul":"Keceriaan Bersama","wide":true},{"foto":"assets/f3.jpeg","judul":"Kebersamaan Keluarga","wide":false},{"foto":"assets/f4.jpeg","judul":"Senyum Manis Jesslyn","wide":false}],"ucapan":[],"hadiah":[],"catatanHadiah":"Kado fisik dapat dikirimkan ke alamat acara. Terima kasih atas cinta dan perhatiannya. &#9825;","catatan":["Mohon konfirmasi kehadiran melalui formulir di atas.","Acara bersifat ramah anak. Mohon anak-anak didampingi oleh orang tua/wali masing-masing.","Area parkir tersedia di lokasi acara dan dibantu oleh petugas.","Mohon menjaga kebersihan serta ketertiban selama acara berlangsung."]}</script>
 <script>
@@ -975,8 +988,13 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
   /* --- 10. Musik latar --- */
   var audio = q("#music"), fab = q("#musicFab"), iconUse = q("#musicIcon");
   function setIcon(play){
-    iconUse.setAttribute("href", play ? "#i-music" : "#i-mute");
-    fab.classList.toggle("spin", !!play);
+    if(iconUse) iconUse.setAttribute("href", play ? "#i-music" : "#i-mute");
+    if(fab){
+      fab.classList.toggle("spin", !!play);
+      fab.setAttribute('aria-label',play ? 'Jeda musik' : 'Putar musik');
+      fab.setAttribute('aria-pressed',play ? 'true' : 'false');
+      fab.title=play ? 'Jeda musik' : 'Putar musik';
+    }
   }
   function playMusic(){
     if(!DATA.musikAktif || !audio) return;
@@ -1046,7 +1064,7 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
   var shareFab = q("#shareFab");
   if(shareFab) shareFab.addEventListener("click", function(){
     if(location.protocol === "file:" && !DATA.linkUndangan){ alert("Bagikan file undangan-tamu.html melalui WhatsApp, atau unggah ke hosting lalu isi URL undangan online di panel edit."); return; }
-    var link = DATA.linkUndangan || location.href.split("?")[0];
+    var link = DATA.linkUndangan ? DATA.linkUndangan.split("#")[0] : location.href.split(/[?#]/)[0];
     var teks = "Undangan Ulang Tahun " + DATA.namaAnak + " yang ke-" + DATA.usiaKe + " \u2014 " +
                DATA.hariTanggal + ". Buka undangan digitalnya di sini: " + link;
     if(navigator.share){ navigator.share({ title:"Undangan Ulang Tahun", text:teks, url:link }).catch(function(){}); }
@@ -1059,9 +1077,22 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
     if(gate){ gate.style.display = "none"; gate.setAttribute("aria-hidden","true"); }
     d.body.classList.remove("locked"); d.body.classList.add("opened");
     d.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
-    try { playMusic(); } catch(e) { /* Opening works even when audio is unavailable. */ }
+    // Start playback directly from the tap, so phones recognize the user gesture.
+    try { playMusic(); } catch(e) { setIcon(false); }
+    var intro=q('#pembuka');
+    if(intro) intro.scrollIntoView({behavior:'auto',block:'start'});
   }
-  if(btn) btn.addEventListener("click", open);
+  function showCover(){
+    if(audio) audio.pause();
+    if(gate){ gate.classList.remove('open'); gate.style.display=''; gate.removeAttribute('aria-hidden'); }
+    d.body.classList.remove('opened'); d.body.classList.add('locked');
+    try { history.replaceState(history.state,'',location.pathname+location.search); } catch(e) {}
+    window.scrollTo({top:0,behavior:'auto'});
+    setIcon(false);
+  }
+  window.showInvitationCover=showCover;
+  if(btn) btn.addEventListener('click',function(event){event.preventDefault();open();});
+  setIcon(audio && !audio.paused);
 
 
   /* --- 15. Kelopak bunga --- */
@@ -1110,7 +1141,7 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
       if(a.getAttribute("data-target") !== "gate") return;
       a.addEventListener("click", function(ev){
         ev.preventDefault();
-        window.scrollTo({ top:0, behavior:"smooth" });
+        showCover();
       });
     });
   })();
