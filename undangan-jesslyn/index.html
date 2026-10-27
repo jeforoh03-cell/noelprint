@@ -13,14 +13,16 @@
   });
 })();
 </script>
-
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FDF4F2">
-<title>Undangan Ulang Tahun — Jesslyn Imanuella Faith Lintong</title>
-<meta name="description" content="Undangan digital ulang tahun anak. Tema Kelinci Balerina. Siap diedit dan dibagikan.">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Undangan Baptisan Kudus — Jesslyn Imanuella Faith Lintong</title>
+<meta name="description" content="Undangan digital Baptisan Kudus Jesslyn. Tema Kelinci Balerina. Siap diedit dan dibagikan.">
 <!--
   ============================================================
-  UNDANGAN DIGITAL ULANG TAHUN ANAK
+  UNDANGAN DIGITAL BAPTISAN KUDUS ANAK
   Tema: Kelinci Balerina  |  Desain: blush pink, krem & gold
   ------------------------------------------------------------
   CARA EDIT  : buka bagian "DATA UNDANGAN" (di dekat akhir file,
@@ -140,21 +142,8 @@ section{position:relative;padding:74px 0}
 }
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 .gate-name{font-size:clamp(40px,13vw,58px);line-height:1.05;margin:2px 0 0;color:#5E4241}
-.gate-age{
-  margin:14px auto 0;display:inline-flex;align-items:center;justify-content:center;gap:12px;
-  padding:12px 20px;border-radius:999px;
-  background:linear-gradient(160deg,rgba(255,255,255,.95),rgba(255,242,245,.92));
-  border:1px solid rgba(198,161,91,.34);
-  box-shadow:0 16px 38px -24px rgba(154,101,104,.42)
-}
-.gate-age .age-label{
-  font-family:var(--font-ui);font-size:clamp(13px,3.3vw,16px);letter-spacing:.24em;text-transform:uppercase;
-  color:var(--rose-deep);font-weight:600;line-height:1.2
-}
-.gate-age .age-number{
-  font-family:var(--font-display);font-size:clamp(44px,13vw,68px);font-weight:400;line-height:1;
-  letter-spacing:.02em;text-shadow:0 4px 16px rgba(198,161,91,.18)
-}
+.gate-age{margin-top:6px}
+.gate-age b{font-size:clamp(30px,10vw,42px);font-weight:400}
 .to-label{
   font-family:var(--font-ui);font-size:10.5px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold)
 }
@@ -179,6 +168,13 @@ section{position:relative;padding:74px 0}
 .btn.ghost:hover{border-color:var(--gold);color:#5E4241}
 .btn-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:24px}
 
+/* Maps: tautan langsung yang bekerja sebagai universal link Safari/iPhone. */
+.btn.is-disabled{pointer-events:none;opacity:.5;cursor:default;box-shadow:none}
+.map-iframe{display:block;width:100%;height:320px;border:0;border-radius:16px;background:#f8f0ed}
+.map-location-detail{font-size:13px;margin:12px 0;line-height:1.7}
+.map-help{font-size:12px;margin:12px 0 0;line-height:1.6}
+.map-actions .btn{font-size:11px;letter-spacing:.09em;padding:14px 18px}
+@media(max-width:390px){.map-iframe{height:270px}.map-actions{gap:9px}.map-actions .btn{width:100%;font-size:11px}}
 /* =========================================================
    5. KARTU & KOMPONEN UMUM
    ========================================================= */
@@ -201,6 +197,8 @@ section{position:relative;padding:74px 0}
 .info-row .v{font-size:18px;color:#5A3F3F;line-height:1.5}
 .info-row .v small,.info-row small{display:block;margin-top:3px;font-size:14.5px;color:var(--ink-soft);line-height:1.6;font-family:var(--font-ui);letter-spacing:.01em}
 
+.baptism-empty:empty::after{content:"—";color:var(--ink-soft);opacity:.65}
+
 /* countdown */
 .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
 .cd-box{
@@ -211,21 +209,25 @@ section{position:relative;padding:74px 0}
 .cd-box span{font-family:var(--font-ui);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--rose-deep)}
 
 /* rundown */
-.timeline{position:relative;margin-top:24px;display:grid;gap:14px}
-.tl-item{display:grid;grid-template-columns:118px 22px 1fr;gap:12px;align-items:stretch;padding:16px 16px 16px 14px;
-  border-radius:22px;background:linear-gradient(160deg,#FFFFFF,#FFF3F6);border:1px solid rgba(198,161,91,.28);
-  box-shadow:0 16px 36px -24px rgba(154,101,104,.42)}
-.tl-time{font-family:var(--font-ui);font-size:12px;letter-spacing:.08em;color:#8F5B62;background:rgba(255,255,255,.96);
-  border:1px solid rgba(198,161,91,.32);border-radius:14px;padding:10px 12px;line-height:1.5;text-align:center;
-  display:flex;align-items:center;justify-content:center}
+#rundown .rundown-heading{margin:5px 0 10px}
+#rundown .rundown-intro{font-style:italic;max-width:520px;margin:0 auto;line-height:1.7}
+#rundown .tl-time{font-size:21px;font-weight:700;letter-spacing:0;color:var(--rose-deep)}
+#rundown .tl-item{padding:15px 0;grid-template-columns:54px 22px 1fr}
+#rundown .tl-text{font-size:18px;font-weight:600;line-height:1.4}
+#rundown .tl-text small{font-weight:400;margin-top:4px;line-height:1.65}
+
+.timeline{position:relative;margin-top:22px;padding-left:4px}
+.tl-item{display:grid;grid-template-columns:74px 22px 1fr;gap:8px;align-items:start;padding:11px 0}
+.tl-time{font-family:var(--font-ui);font-size:12.5px;letter-spacing:.08em;color:var(--rose-deep);padding-top:2px}
 .tl-dot{position:relative;display:flex;justify-content:center;padding-top:6px}
-.tl-dot::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--gold-soft);
+.tl-dot::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--gold-soft);
   border:1.5px solid var(--gold);position:relative;z-index:2}
 .tl-item:not(:last-child) .tl-dot::after{
-  content:"";position:absolute;top:2px;bottom:-20px;left:50%;width:1px;background:rgba(198,161,91,.35)
+  content:"";position:absolute;top:0;bottom:-14px;left:50%;width:1px;background:rgba(198,161,91,.35)
 }
-.tl-text{font-size:18px;font-weight:600;color:#5A3F3F;line-height:1.45}
-.tl-text small{display:block;margin-top:6px;font-family:var(--font-ui);font-size:13px;color:var(--ink-soft);line-height:1.55}
+.tl-text{font-size:17px;color:#5A3F3F}
+.tl-text small{display:block;font-family:var(--font-ui);font-size:13px;color:var(--ink-soft)}
+
 /* galeri */
 .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:22px}
 .gallery .g-item{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:3/4;
@@ -360,10 +362,10 @@ body>main>section .title,body>main>section .eyebrow,body>main>section .lead{
 }
 </style>
 <style id="opening-fallback">
-body:not(.interactive):has(#pembuka:target){overflow:auto;height:auto}
-body:not(.interactive):has(#pembuka:target) #gate{display:none!important}
-body:not(.interactive):has(#pembuka:target) .rv{opacity:1;transform:none}
-body:not(.interactive):has(#pembuka:target) .navbar{transform:translateX(-50%) translateY(0)}
+body:has(#pembuka:target){overflow:auto;height:auto}
+body:has(#pembuka:target) #gate{display:none!important}
+body:has(#pembuka:target) .rv{opacity:1;transform:none}
+body:has(#pembuka:target) .navbar{transform:translateX(-50%) translateY(0)}
 </style>
 <noscript><style>#editLaunch,.fabs{display:none!important}body.locked{overflow:auto;height:auto}.rv{opacity:1!important;transform:none!important}</style></noscript>
 <style id="iphone-compatibility">
@@ -400,41 +402,78 @@ dialog[open]{display:block;position:fixed;inset:5vh auto auto 50%;transform:tran
 }
 @media(max-width:390px){[data-f="namaAnak"]{font-size:clamp(28px,7.8vw,34px)!important}}
 </style>
-<style id="iphone-maps-styles">
-/* Mobile Safari: prevent iPhone safe-area overlays and supply a map fallback. */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
-  .navbar { bottom:calc(12px + env(safe-area-inset-bottom)); }
-  .fabs { bottom:calc(106px + env(safe-area-inset-bottom)); }
+
+<style id="safari-iphone-refinements">
+/* Ayat di cover dan judul, termasuk fallback font bila offline. */
+.cover-verse {
+  display:block;
+  width:100%;
+  max-width:520px;
+  margin:18px auto 12px;
+  padding:18px 17px 16px;
+  border:1.5px solid rgba(198,161,91,.64);
+  border-radius:20px;
+  background:rgba(255,251,248,.97);
+  box-shadow:0 10px 30px rgba(128,77,84,.12);
+  -webkit-backdrop-filter:blur(5px);
+  backdrop-filter:blur(5px);
+  overflow-wrap:break-word;
 }
-#mapFallback{display:none;background:linear-gradient(140deg,#fffdfa,#fff0f4);border:1px solid rgba(198,161,91,.36);border-radius:18px;padding:34px 20px;text-align:center;min-height:235px;align-content:center}
-#mapFallback .map-pin{font-size:46px;line-height:1.2;display:block;margin-bottom:8px}
-#mapFallback strong{display:block;font-family:var(--font-display);font-size:26px;line-height:1.25;color:#6a4c4b}
-#mapFallback p{font-family:var(--font-ui);font-size:13px;line-height:1.75;color:var(--ink-soft);margin:10px 0 0}
-/* Peta tidak disembunyikan pada iPhone, termasuk saat dibuka dari file lokal. */
-#venueMap{display:block}
-#mapFallback{display:none}
-#mapFallback.is-visible{display:block;margin-top:12px}
-@media(max-width:460px){
-  #lokasi .card{padding:10px !important}
-  #lokasi .btn{width:100%;max-width:360px;min-height:48px}
-  .gate-inner{padding-bottom:48px}
+.cover-verse .verse-text {
+  display:block;
+  font-family:Georgia,"Times New Roman",serif;
+  color:#644747;
+  font-size:clamp(18px,4.6vw,26px);
+  line-height:1.48;
+  font-weight:700;
+  letter-spacing:.005em;
 }
-@media(max-height:740px){.gate-scroll{align-items:flex-start}.gate-inner{margin:auto}}
-/* Peta acara nyaman dilihat di iPhone serta tersedia tautan langsung tanpa bergantung pada iframe. */
-.venue-map-shell{position:relative;overflow:hidden;isolation:isolate;width:100%;height:355px;border-radius:18px;background:linear-gradient(145deg,#fffaf7,#fce9ee);border:1px solid rgba(198,161,91,.32)}
-.venue-map-shell #venueMap{display:block;width:100%;height:100%;min-height:0;border:0;border-radius:18px;background:transparent}
-.venue-map-direct{position:absolute;z-index:3;right:12px;top:12px;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:11px 13px;border-radius:999px;background:#fff;color:#6b3e4d;font-family:var(--font-ui);font-size:12px;font-weight:700;line-height:1.2;text-decoration:none;box-shadow:0 4px 15px rgba(69,44,53,.18);border:1px solid rgba(198,161,91,.5);max-width:calc(100% - 24px)}
-.venue-map-direct:focus-visible{outline:3px solid var(--rose-deep);outline-offset:2px}
-.venue-map-note{font-family:var(--font-ui);font-size:12.5px;line-height:1.65;color:#6d5559;background:#fff9fb;border-radius:12px;padding:10px 12px;margin:12px 0 0}
-@media(max-width:460px){.venue-map-shell{height:335px}.venue-map-direct{font-size:12px;min-height:44px}.venue-map-note{font-size:12px}}
+.cover-verse .verse-ref {
+  display:block;
+  color:#AD8145;
+  font-family:var(--font-ui);
+  margin-top:12px;
+  font-size:clamp(14px,3.6vw,17px);
+  font-weight:700;
+  letter-spacing:.10em;
+}
+#gate .sacrament-title {
+  display:inline-block;
+  font-family:var(--font-script);
+  font-size:clamp(42px,11.5vw,70px);
+  font-weight:400;
+  line-height:1.12;
+  padding:6px 5px 3px;
+  text-transform:none;
+  letter-spacing:0;
+  background:none;
+  -webkit-background-clip:initial;
+  background-clip:initial;
+  color:#A87432;
+  -webkit-text-fill-color:#A87432;
+}
+/* Dukungan Safari iOS: touch target, safe-area, scrolling, rendering. */
+html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body { -webkit-overflow-scrolling:touch; }
+.gate-scroll,dialog[open],.editor main { -webkit-overflow-scrolling:touch; }
+#gate .gate-inner { padding-left:max(22px,env(safe-area-inset-left)); padding-right:max(22px,env(safe-area-inset-right)); }
+#openBtn { position:relative;z-index:5; touch-action:manipulation; min-height:50px; }
+#openBtn,button,.btn,a { -webkit-tap-highlight-color:rgba(198,161,91,.15); }
+.btn.is-disabled { pointer-events:none;opacity:.5; }
+@media (max-width:400px) {
+  .cover-verse { margin:12px auto 10px;padding:14px 13px 12px;border-radius:17px; }
+  .cover-verse .verse-text { font-size:clamp(17px,4.75vw,20px); }
+  #gate .sacrament-title { font-size:clamp(40px,11.2vw,49px); }
+  .gate-inner { padding-bottom:max(32px,env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .hero-photo img,.petal { animation:none!important; }
+  #gate {transition:none!important;}
+}
 </style>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="robots" content="index,follow">
-<style id="uploaded-gallery-photos">
-/* Preserve the complete portrait photos in the existing gallery layout. */
-#galleryGrid .g-item{aspect-ratio:1066/1600}
-#galleryGrid .g-item>img{width:100%;height:100%;object-fit:contain}
+<style id="jesslyn-gallery-photos">
+/* Tampilkan foto vertikal secara utuh, termasuk foto keluarga. */
+#galleryGrid .g-item,#galleryGrid .g-item.wide{aspect-ratio:2/3}
 </style>
 <style id="reliable-opening">
 /* Keep the invitation entry visible, including on shorter phone screens. */
@@ -479,22 +518,25 @@ body.opened #gate{display:none!important}
 
   <div class="gate-scroll">
     <div class="gate-inner">
-      <p class="eyebrow">Undangan Ulang Tahun</p>
+      <p class="eyebrow">Undangan Baptisan Kudus</p>
       <div class="hero-photo">
         <span class="hero-glow"></span>
-        <img decoding="async" fetchpriority="high" data-src="fotoUtama" alt="Foto Jesslyn" src="assets/f1.jpeg">
+        <img data-src="fotoUtama" alt="Foto Jesslyn Imanuella Faith Lintong" src="assets/f1.jpeg">
       </div>
       <h1 class="gate-name script" data-f="namaAnak">Jesslyn Imanuella Faith Lintong</h1>
+      <div class="cover-verse" aria-label="Ayat Alkitab">
+        <span class="verse-text">“Biarlah anak-anak itu datang kepada-Ku, jangan menghalang-halangi mereka.”</span>
+        <span class="verse-ref">Markus 10:14</span>
+      </div>
       <div class="gate-age">
-        <span class="age-label">yang ke—</span>
-        <b class="gold-text age-number" data-f="usiaKe">1</b>
-        <span class="age-label">tahun</span>
+        <span class="eyebrow">Dengan penuh kasih dan syukur</span>
+        <br><b class="gold-text script sacrament-title">Baptisan Kudus</b>
       </div>
       <div class="orn" aria-hidden="true">
         <i></i><svg viewBox="0 0 24 24" fill="none" stroke="#C6A15B" stroke-width="1.1"><path d="M12 4c1.6 2.6 1.6 5.4 0 8-1.6-2.6-1.6-5.4 0-8Z"></path><path d="M12 12c2.6-1.6 5.4-1.6 8 0-2.6 1.6-5.4 1.6-8 0Z"></path><path d="M12 12c-2.6 1.6-5.4 1.6-8 0 2.6-1.6 5.4-1.6 8 0Z"></path><circle cx="12" cy="12" r="1.3"></circle></svg><i></i>
       </div>
       <p class="lead" style="margin:0" data-f="hariTanggal">Minggu, 1 November 2026</p>
-      <p class="eyebrow" style="margin-top:4px" data-f="jam">15.00 WITA</p>
+      <p class="eyebrow" style="margin-top:4px" data-f="jam">13.00 WITA</p>
 
       <div class="to-card">
         <p class="to-label">Kepada</p>
@@ -503,12 +545,12 @@ body.opened #gate{display:none!important}
       </div>
 
       <div class="btn-row">
-        <a class="btn" id="openBtn" href="#pembuka" onclick="document.getElementById('gate').style.display='none';document.body.classList.remove('locked');document.body.classList.add('opened');document.querySelectorAll('.rv').forEach(function(e){e.classList.add('in')});">
+        <a class="btn" id="openBtn" href="#pembuka">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 4v13"></path><path d="M7 12l5 5 5-5"></path><path d="M5 20h14"></path></svg>
           Buka Undangan
         </a>
       </div>
-      <p class="eyebrow" style="margin-top:20px;opacity:.8">✿ Ketuk Buka Undangan untuk memutar musik ✿</p>
+      <p class="eyebrow" style="margin-top:20px;opacity:.8">✿ Mohon aktifkan suara untuk pengalaman terbaik ✿</p>
     </div>
   </div>
 </div>
@@ -527,17 +569,17 @@ body.opened #gate{display:none!important}
       <h2 class="title">Dengan penuh <em>syukur</em> &amp; bahagia</h2>
       <div class="orn" aria-hidden="true"><i></i><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#C6A15B" stroke-width="1.1"><path d="M12 4c1.6 2.6 1.6 5.4 0 8-1.6-2.6-1.6-5.4 0-8Z"></path><path d="M12 12c2.6-1.6 5.4-1.6 8 0-2.6 1.6-5.4 1.6-8 0Z"></path><path d="M12 12c-2.6 1.6-5.4 1.6-8 0 2.6-1.6 5.4-1.6 8 0Z"></path><circle cx="12" cy="12" r="1.3"></circle></svg><i></i></div>
       <p class="lead" data-f="pembukaSalam" style="font-size:19px;color:#5A3F3F">Salam Sejahtera</p>
-      <p class="lead" style="margin:18px auto 0;max-width:520px;padding:18px 22px;font-size:clamp(22px,5.8vw,30px);line-height:1.55;font-weight:600;color:#A55D67;background:linear-gradient(160deg,#FFFFFF,#FFF1F4);border:1px solid rgba(198,161,91,.35);border-radius:22px;box-shadow:0 14px 34px -20px rgba(154,101,104,.42);" data-f="pembukaTeks">Halo teman-teman! 🎈 Aku Jesslyn mau merayakan ulang tahunku yang ke-1. Yuk, datang ke pestaku!</p>
+      <p class="lead" style="margin-top:14px" data-f="pembukaTeks">Dengan penuh syukur atas kasih dan penyertaan Tuhan Yesus Kristus, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara Baptisan Kudus putri tercinta kami, Jesslyn Imanuella Faith Lintong. Kehadiran serta doa Bapak/Ibu/Saudara/i kiranya menjadi berkat dalam perjalanan iman dan kehidupannya.</p>
 
       <div class="card card-soft" style="margin-top:30px">
         <div class="hero-photo" style="width:min(58vw,200px);margin-bottom:12px">
           <span class="hero-glow"></span>
-          <img loading="lazy" decoding="async" data-src="fotoWajah" alt="Foto Jesslyn" style="border-radius:50%;aspect-ratio:1;object-fit:cover;object-position:center 75%" src="assets/f5.jpeg">
+          <img data-src="fotoWajah" alt="Foto anak" style="border-radius:50%" src="assets/f5.jpeg">
         </div>
         <p class="eyebrow">Putri kami tercinta</p>
         <h3 class="script gold-text" style="font-size:clamp(34px,9vw,44px);margin:4px 0 0" data-f="namaAnak">Jesslyn Imanuella Faith Lintong</h3>
         <p class="lead" style="margin:4px 0 0">Putri dari <span data-f="orangtua">Papa Denis Lintong &amp; Mama Sherina Mongilala</span></p>
-        <p class="lead" style="font-style:italic;opacity:.85;margin:16px 0 0">“<span data-f="quote">Setiap tahun adalah anugerah, setiap tawa adalah doa yang terkabul.</span>”</p>
+        <p class="lead" style="font-style:italic;opacity:.85;margin:16px 0 0">“<span data-f="quote">Biarlah anak-anak itu datang kepada-Ku, jangan menghalang-halangi mereka. — Markus 10:14</span>”</p>
       </div>
     </div>
   </section>
@@ -563,8 +605,8 @@ body.opened #gate{display:none!important}
           <span class="ic"><svg><use href="#i-clock"></use></svg></span>
           <span>
             <span class="k">Waktu</span>
-            <span class="v" data-f="jam">15.00 WITA</span>
-            <small data-f="catatanWaktu">Acara bersifat ramah anak (kids friendly)</small>
+            <span class="v" data-f="jam">13.00 WITA</span>
+            <small data-f="catatanWaktu">Mohon hadir tepat waktu untuk mengikuti acara baptisan</small>
           </span>
         </div>
         <div class="info-row">
@@ -572,30 +614,64 @@ body.opened #gate{display:none!important}
           <span>
             <span class="k">Tempat</span>
             <span class="v" data-f="namaTempat">DOMINIC FURNITURE &amp; INTERIOR</span>
-            <small data-f="alamat">Leilem 3 Jaga 1, belakang Warung Vibra, Jalan Raya, Kabupaten Minahasa, Sulawesi Utara 95691</small>
-          </span>
-        </div>
-        <div class="info-row">
-          <span class="ic"><svg><use href="#i-dress"></use></svg></span>
-          <span>
-            <span class="k">Dresscode</span>
-            <span class="v" data-f="tema">PUTIH</span>
-            <small data-f="dresscode">PUTIH</small>
+            <small data-f="alamat">Rumah ke 3 dari, Leilem 3 jaga 1 belakang warung vibra, jalan raya, Kabupaten Minahasa, Sulawesi Utara 95691</small>
           </span>
         </div>
       </div>
 
-      <div class="card rv center" style="transition-delay: 0ms;">
-        <p class="eyebrow">Menuju hari bahagia</p>
+      <!-- Informasi baptisan: tetap kosong sampai diisi melalui Edit Undangan -->
+      <div class="card rv" style="margin-top: 18px; transition-delay: 0ms;">
+        <div class="center">
+          <p class="eyebrow">Baptisan Kudus</p>
+          <h3 style="font-size:27px;color:#5E4241;line-height:1.3;margin:3px 0 12px">Informasi <em style="color:var(--rose-deep);font-style:normal">Ibadah Gereja</em></h3>
+        </div>
+        <div class="info-row">
+          <span class="ic"><svg><use href="#i-pin"></use></svg></span>
+          <span>
+            <span class="k">Tempat Baptisan</span>
+            <span class="v baptism-empty" data-f="tempatBaptisan">Gereja GMIM IMANUEL LEILEM</span>
+          </span>
+        </div>
+        <div class="info-row">
+          <span class="ic"><svg><use href="#i-leaf"></use></svg></span>
+          <span>
+            <span class="k">Nama Gereja</span>
+            <span class="v baptism-empty" data-f="namaGereja">GMIM IMANUEL LEILEM</span>
+          </span>
+        </div>
+        <div class="info-row">
+          <span class="ic"><svg><use href="#i-clock"></use></svg></span>
+          <span>
+            <span class="k">Jam Ibadah Gereja</span>
+            <span class="v baptism-empty" data-f="jamIbadahGereja">Jam 9.30</span>
+          </span>
+        </div>
+        <div class="info-row">
+          <span class="ic"><svg><use href="#i-pin"></use></svg></span>
+          <span>
+            <span class="k">Alamat Gereja</span>
+            <span class="v baptism-empty" data-f="alamatGereja">Jl. Raya Tomohon–Kawangkoan (Jl. Kawangkoan–Tomohon), Desa Leilem, Kecamatan Sonder, Kabupaten Minahasa, Sulawesi Utara</span>
+          </span>
+        </div>
+        <div class="btn-row" style="margin-top:14px;justify-content:center">
+          <a class="btn ghost" id="churchMapsBtn" href="https://maps.app.goo.gl/L5FySy4gYsjD26bw5?g_st=iwb" rel="noopener noreferrer" aria-disabled="false" tabindex="0">
+            <svg width="17" height="17"><use href="#i-pin"></use></svg> Buka Maps Gereja
+          </a>
+        </div>
+        <p class="lead map-note" id="churchMapsNote">Ketuk Buka Maps Gereja untuk melihat lokasi gereja.</p>
+      </div>
+
+      <div class="card rv center" style="transition-delay: 90ms;">
+        <p class="eyebrow">Ibadah di gereja, dilanjutkan resepsi di rumah</p>
         <div class="countdown" id="countdown" aria-live="polite">
-          <div class="cd-box"><b id="cdD">24</b><span>Hari</span></div>
-          <div class="cd-box"><b id="cdH">07</b><span>Jam</span></div>
-          <div class="cd-box"><b id="cdM">06</b><span>Menit</span></div>
-          <div class="cd-box"><b id="cdS">44</b><span>Detik</span></div>
+          <div class="cd-box"><b id="cdD">21</b><span>Hari</span></div>
+          <div class="cd-box"><b id="cdH">20</b><span>Jam</span></div>
+          <div class="cd-box"><b id="cdM">26</b><span>Menit</span></div>
+          <div class="cd-box"><b id="cdS">05</b><span>Detik</span></div>
         </div>
         <div class="btn-row">
-          <a class="btn" id="mapsBtn" href="https://maps.app.goo.gl/ZdrHnYuSuPsRi2w47?g_st=iwb" data-href="maps" rel="noopener noreferrer">
-            <svg width="17" height="17"><use href="#i-pin"></use></svg> Buka Google Maps
+          <a class="btn" id="mapsBtn" href="https://www.google.com/maps?cid=13447757939872876733" data-href="https://www.google.com/maps?cid=13447757939872876733" rel="noopener">
+            <svg width="17" height="17"><use href="#i-pin"></use></svg> <span id="mapsBtnLabel">Buka Google Maps</span>
           </a>
           <button class="btn ghost" id="icsBtn" data-t="1">
             <svg width="17" height="17"><use href="#i-cal"></use></svg> Simpan ke Kalender
@@ -606,59 +682,48 @@ body.opened #gate{display:none!important}
   </section>
 
   <section id="lokasi" class="section-soft">
-    <div class="wrap center rv" style="transition-delay: 90ms;">
+    <div class="wrap center rv" style="transition-delay: 180ms;">
       <p class="eyebrow">Lokasi acara</p>
       <h2 class="title">Sampai jumpa <em>di sini</em></h2>
       <p class="lead" data-f="namaTempat">DOMINIC FURNITURE &amp; INTERIOR</p>
       <div class="card" style="padding:12px;margin-top:20px">
-        <div class="venue-map-shell" aria-label="Pratinjau peta lokasi ulang tahun Jesslyn">
-          <iframe id="venueMap" title="Peta Dominic Furniture &amp; Interior di Leilem Tiga" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen src="https://maps.google.com/maps?hl=id&amp;q=Dominic%20Furniture%20%26%20Interior%2C%20Leilem%203%20Jaga%201%2C%20Sonder%2C%20Minahasa%2C%20Sulawesi%20Utara%2095691&amp;z=17&amp;output=embed"></iframe>
-          <a id="venueMapOverlay" class="venue-map-direct" href="https://maps.app.goo.gl/ZdrHnYuSuPsRi2w47?g_st=iwb" target="_blank" rel="noopener noreferrer" aria-label="Buka lokasi Dominic Furniture dan Interior langsung di Google Maps">📍 Buka lokasi ↗</a>
+        <iframe id="venueMap" class="map-iframe" title="Peta lokasi DOMINIC FURNITURE &amp; INTERIOR, Rumah ke 3 dari, Leilem 3 jaga 1 belakang warung vibra, jalan raya, Kabupaten Minahasa, Sulawesi Utara 95691" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen="" src="https://maps.google.com/maps?q=DOMINIC%20FURNITURE%20%26%20INTERIOR%2C%20Rumah%20ke%203%20dari%2C%20Leilem%203%20jaga%201%20belakang%20warung%20vibra%2C%20jalan%20raya%2C%20Kabupaten%20Minahasa%2C%20Sulawesi%20Utara%2095691&amp;z=16&amp;output=embed"></iframe>
+        <p class="lead map-location-detail" id="venueAddressText">Rumah ke 3 dari, Leilem 3 jaga 1 belakang warung vibra, jalan raya, Kabupaten Minahasa, Sulawesi Utara 95691</p>
+        <div class="btn-row map-actions">
+          <a id="venueMapLink" class="btn" href="https://www.google.com/maps?cid=13447757939872876733" rel="noopener noreferrer">📍 Google Maps</a>
         </div>
-        <div id="mapFallback" role="group" aria-label="Alternatif tampilan lokasi Google Maps">
-          <span class="map-pin" aria-hidden="true">📍</span>
-          <strong>Dominic Furniture &amp; Interior</strong>
-          <p>Jika peta tidak berhasil dimuat, buka titik lokasi tepatnya lewat tombol <b>Buka Google Maps</b> atau scan QR code di bawah.</p>
-        </div>
-        <p class="lead" style="font-size:13px;margin:12px 0">Leilem 3 Jaga 1, belakang Warung Vibra, Jalan Raya, Kabupaten Minahasa, Sulawesi Utara 95691</p>
-        <p class="venue-map-note">Di iPhone, ketuk <b>📍 Buka lokasi</b> pada peta untuk melihat titik acara di Google Maps. Jika peta tidak terlihat dalam pratinjau file, tombol tetap bisa digunakan.</p>
-        <div class="map-qr-box" style="margin:14px auto 10px;max-width:240px;padding:14px;background:linear-gradient(160deg,#FFFFFF,#FFF3F6);border:1px solid rgba(198,161,91,.28);border-radius:20px;box-shadow:0 14px 34px -22px rgba(154,101,104,.38);text-align:center">
-          <img loading="lazy" decoding="async" src="assets/lokasi-qr.png" alt="QR code lokasi Google Maps" style="display:block;width:100%;max-width:170px;margin:0 auto;border-radius:14px">
-          <p class="lead" style="font-size:12px;margin:10px 0 0">Scan QR code ini untuk membuka lokasi acara di Google Maps.</p>
-        </div>
-        <div class="btn-row"><a id="venueMapLink" class="btn" data-href="maps" href="https://maps.app.goo.gl/ZdrHnYuSuPsRi2w47?g_st=iwb" rel="noopener noreferrer">📍 Buka Google Maps</a></div>
-        <p class="lead" style="font-size:12px;margin:12px 0 0">Jika menggunakan iPhone, ketuk Buka Google Maps untuk melihat titik lokasi. Peta membutuhkan internet.</p>
       </div>
     </div>
   </section>
 
-  <!-- B3. SUSUNAN ACARA -->
+  <!-- B3. RANGKAIAN ACARA SYUKURAN -->
   <section id="rundown" class="section-soft">
     <div class="wrap">
-      <div class="center rv" style="transition-delay: 180ms;">
-        <p class="eyebrow">Rangkaian acara</p>
-        <h2 class="title">Susunan <em>Acara</em></h2>
+      <div class="center rv" style="transition-delay: 0ms;">
+        <p class="eyebrow">✝️ Rangkaian Acara</p>
+        <h2 class="title rundown-heading">Syukuran <em>Baptisan Kudus</em></h2>
+        <p class="lead rundown-intro">Dengan penuh sukacita dan rasa syukur atas berkat serta kasih Tuhan.</p>
       </div>
-      <div class="timeline rv" id="rundownList" style="transition-delay: 0ms;"><div class="tl-item"><div class="tl-time">15.00 – 15.15</div><div class="tl-dot"></div><div class="tl-text">🎈 Penyambutan Tamu<small>Welcome to the Party!</small></div></div><div class="tl-item"><div class="tl-time">15.15 – 15.25</div><div class="tl-dot"></div><div class="tl-text">🎤 Pembukaan Acara<small>Let's Start the Celebration!</small></div></div><div class="tl-item"><div class="tl-time">15.25 – 15.40</div><div class="tl-dot"></div><div class="tl-text">🙏 Ibadah Doa & Ucapan Syukur<small>Blessings for Jesslyn</small></div></div><div class="tl-item"><div class="tl-time">15.40 – 16.00</div><div class="tl-dot"></div><div class="tl-text">🎂 Tiup Lilin & Potong Kue<small>Happy 1st Birthday!</small></div></div><div class="tl-item"><div class="tl-time">16.00 – 16.30</div><div class="tl-dot"></div><div class="tl-text">🎁 Games & Doorprize<small>Fun Time Together!</small></div></div><div class="tl-item"><div class="tl-time">16.30 – 17.00</div><div class="tl-dot"></div><div class="tl-text">📸 Foto Bersama & Ramah Tamah<small>Capture the Sweet Moments!</small></div></div><div class="tl-item"><div class="tl-time">17.00</div><div class="tl-dot"></div><div class="tl-text">💝 Penutupan<small>Thank You for Coming!</small></div></div></div>
+      <div class="timeline rv" id="rundownList" style="transition-delay: 90ms;"><div class="tl-item"><div class="tl-time">1.</div><div class="tl-dot"></div><div class="tl-text">Pembukaan &amp; Sambutan<small>Ucapan selamat datang dari keluarga.</small></div></div><div class="tl-item"><div class="tl-time">2.</div><div class="tl-dot"></div><div class="tl-text">Ibadah, Doa Syukur &amp; Berkat<small>Doa bersama sebagai ungkapan syukur kepada Tuhan lewat pemberitaan firman dan doa.</small></div></div><div class="tl-item"><div class="tl-time">3.</div><div class="tl-dot"></div><div class="tl-text">Ucapan Syukur Keluarga<small>Ungkapan kebahagiaan dan terima kasih dari orang tua.</small></div></div><div class="tl-item"><div class="tl-time">4.</div><div class="tl-dot"></div><div class="tl-text">Ramah Tamah &amp; Santap Kasih<small>Menikmati hidangan bersama keluarga dan para tamu undangan.</small></div></div><div class="tl-item"><div class="tl-time">5.</div><div class="tl-dot"></div><div class="tl-text">Foto Bersama<small>Mengabadikan momen penuh kebahagiaan.</small></div></div><div class="tl-item"><div class="tl-time">6.</div><div class="tl-dot"></div><div class="tl-text">Penutup<small>Ucapan terima kasih Keluarga</small></div></div></div>
     </div>
   </section>
 
   <!-- B4. GALERI -->
   <section id="galeri" class="section-cream">
     <div class="wrap">
-      <div class="center rv" style="transition-delay: 90ms;">
+      <div class="center rv" style="transition-delay: 180ms;">
         <p class="eyebrow">Kenangan</p>
         <h2 class="title">Galeri <em>Momen</em></h2>
-        <p class="lead">Sekilas cerita dan keceriaan di hari istimewanya.</p>
+        <p class="lead">Momen penuh kasih dan syukur bersama keluarga tercinta.</p>
       </div>
-      <div class="gallery rv" id="galleryGrid" style="transition-delay: 180ms;"><figure class="g-item wide" style="margin:0"><img loading="lazy" decoding="async" src="assets/f2.jpeg" alt="Keceriaan Bersama"><figcaption class="cap-bar">Keceriaan Bersama</figcaption></figure><figure class="g-item" style="margin:0"><img loading="lazy" decoding="async" src="assets/f3.jpeg" alt="Kebersamaan Keluarga"><figcaption class="cap-bar">Kebersamaan Keluarga</figcaption></figure><figure class="g-item" style="margin:0"><img loading="lazy" decoding="async" src="assets/f4.jpeg" alt="Senyum Manis Jesslyn"><figcaption class="cap-bar">Senyum Manis Jesslyn</figcaption></figure></div>
+      <div class="gallery rv" id="galleryGrid" style="transition-delay: 0ms;"><figure class="g-item wide" style="margin:0"><img src="assets/f2.jpeg" alt="Momen Bahagia Jesslyn"><figcaption class="cap-bar">Momen Bahagia Jesslyn</figcaption></figure><figure class="g-item" style="margin:0"><img src="assets/f3.jpeg" alt="Kebersamaan Keluarga"><figcaption class="cap-bar">Kebersamaan Keluarga</figcaption></figure><figure class="g-item" style="margin:0"><img src="assets/f4.jpeg" alt="Senyum Manis Jesslyn"><figcaption class="cap-bar">Senyum Manis Jesslyn</figcaption></figure></div>
     </div>
   </section>
 
   <!-- B5. UCAPAN & DOA -->
   <section id="ucapan" class="section-soft">
     <div class="wrap">
-      <div class="center rv" style="transition-delay: 0ms;">
+      <div class="center rv" style="transition-delay: 90ms;">
         <p class="eyebrow">Ucapan &amp; doa</p>
         <h2 class="title">Kirimkan <em>Doa Terbaik</em></h2>
         <p class="lead">Tuliskan doa, harapan, atau ucapan hangat untuk ananda tercinta.</p>
@@ -666,7 +731,7 @@ body.opened #gate{display:none!important}
 
       
 
-      <div class="card rv" style="transition-delay: 90ms;">
+      <div class="card rv" style="transition-delay: 180ms;">
         <p class="eyebrow">Formulir konfirmasi kehadiran (RSVP)</p>
         <label class="field"><span>Nama</span><input id="fNama" type="text" placeholder="Nama Bapak/Ibu/Saudara/i" autocomplete="name"></label>
         <label class="field"><span>Konfirmasi kehadiran</span>
@@ -695,24 +760,24 @@ body.opened #gate{display:none!important}
   <!-- B7. CATATAN TAMU -->
   <section id="catatan" class="section-soft">
     <div class="wrap">
-      <div class="center rv" style="transition-delay: 180ms;">
+      <div class="center rv" style="transition-delay: 0ms;">
         <p class="eyebrow">Informasi</p>
         <h2 class="title">Catatan untuk <em>Tamu</em></h2>
       </div>
-      <div class="card rv" id="noteList" style="margin-top: 24px; transition-delay: 0ms;"><div class="info-row"><span class="ic"><svg><use href="#i-leaf"></use></svg></span><span class="v" style="font-size:16px">Mohon konfirmasi kehadiran melalui formulir di atas.</span></div><div class="info-row"><span class="ic"><svg><use href="#i-leaf"></use></svg></span><span class="v" style="font-size:16px">Acara bersifat ramah anak. Mohon anak-anak didampingi oleh orang tua/wali masing-masing.</span></div><div class="info-row"><span class="ic"><svg><use href="#i-leaf"></use></svg></span><span class="v" style="font-size:16px">Area parkir tersedia di lokasi acara dan dibantu oleh petugas.</span></div><div class="info-row"><span class="ic"><svg><use href="#i-leaf"></use></svg></span><span class="v" style="font-size:16px">Mohon menjaga kebersihan serta ketertiban selama acara berlangsung.</span></div></div>
+      <div class="card rv" id="noteList" style="margin-top: 24px; transition-delay: 90ms;"><div class="info-row"><span class="ic"><svg><use href="#i-leaf"></use></svg></span><span class="v" style="font-size:16px">Mohon konfirmasi kehadiran melalui formulir di atas.</span></div><div class="info-row"><span class="ic"><svg><use href="#i-leaf"></use></svg></span><span class="v" style="font-size:16px">Acara bersifat ramah anak. Mohon anak-anak didampingi oleh orang tua/wali masing-masing.</span></div><div class="info-row"><span class="ic"><svg><use href="#i-leaf"></use></svg></span><span class="v" style="font-size:16px">Area parkir tersedia di lokasi acara dan dibantu oleh petugas.</span></div><div class="info-row"><span class="ic"><svg><use href="#i-leaf"></use></svg></span><span class="v" style="font-size:16px">Mohon menjaga kebersihan serta ketertiban selama acara berlangsung.</span></div></div>
     </div>
   </section>
 
   <!-- B8. PENUTUP -->
   <section id="penutup" class="section-cream closing">
-    <div class="wrap center rv" style="transition-delay: 90ms;">
+    <div class="wrap center rv" style="transition-delay: 180ms;">
       <div class="hero-photo" style="width:min(52vw,180px)">
         <span class="hero-glow"></span>
-        <img loading="lazy" decoding="async" data-src="fotoUtama" alt="Foto Jesslyn" src="assets/f1.jpeg">
+        <img data-src="fotoUtama" alt="Foto Jesslyn" src="assets/f1.jpeg">
       </div>
       <p class="eyebrow">Terima kasih</p>
       <h2 class="title">Sampai jumpa di <em>hari bahagia</em> kami</h2>
-      <p class="lead" style="margin:18px auto 0;max-width:560px;padding:18px 22px;font-size:clamp(21px,5.4vw,29px);line-height:1.6;font-weight:600;color:#A55D67;background:linear-gradient(160deg,#FFFFFF,#FFF3F6);border:1px solid rgba(198,161,91,.35);border-radius:22px;box-shadow:0 14px 34px -20px rgba(154,101,104,.42);" data-f="penutupTeks">Ditunggu kehadirannya ya! Jangan lupa konfirmasi di Formulir konfirmasi kehadiran (RSVP) di atas. Sampai jumpa di pesta! 🎉</p>
+      <p class="lead" style="margin-top:16px" data-f="penutupTeks">Dengan penuh sukacita, kami berharap Bapak/Ibu/Saudara/i berkenan hadir dan turut mendoakan Jesslyn dalam momen Baptisan Kudus ini. Semoga kasih dan penyertaan Tuhan senantiasa menaungi setiap langkah hidupnya. Atas doa serta kehadirannya, kami mengucapkan terima kasih.</p>
       <div class="orn" aria-hidden="true"><i></i><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#C6A15B" stroke-width="1.1"><path d="M12 4c1.6 2.6 1.6 5.4 0 8-1.6-2.6-1.6-5.4 0-8Z"></path><path d="M12 12c2.6-1.6 5.4-1.6 8 0-2.6 1.6-5.4 1.6-8 0Z"></path><path d="M12 12c-2.6 1.6-5.4 1.6-8 0 2.6-1.6-5.4-1.6-8 0Z"></path><circle cx="12" cy="12" r="1.3"></circle></svg><i></i></div>
       <p class="eyebrow">Kami yang berbahagia</p>
       <p class="script signature" data-f="penutupNama">Keluarga Lintong – Mongilala</p>
@@ -723,7 +788,7 @@ body.opened #gate{display:none!important}
     </div>
   </section>
 <footer id="design-credit" aria-label="Logo Desain by Noel Print" style="position:relative;text-align:center;background:#fbf6ec;padding:30px 24px 130px;padding-bottom:calc(130px + env(safe-area-inset-bottom));">
-<img loading="lazy" decoding="async" src="assets/noelprint.png" alt="Desain by Noel Print" width="1448" height="1086" style="display:block;width:min(290px,82vw);max-width:100%;height:auto;margin:0 auto;object-fit:contain;">
+<img src="assets/noelprint.png" alt="Desain by Noel Print" width="1448" height="1086" style="display:block;width:min(290px,82vw);max-width:100%;height:auto;margin:0 auto;object-fit:contain;">
 </footer>
 </main>
 
@@ -746,9 +811,10 @@ body.opened #gate{display:none!important}
   <a href="#ucapan" data-target="ucapan" class=""><svg><use href="#i-chat"></use></svg>Ucapan</a>
 </nav>
 
-<audio id="music" loop="" preload="metadata" src="assets/musik.mp3"></audio>
+<!-- Musik: Amazing Grace (NEW BRITAIN), aransemen instrumental orisinal untuk undangan ini. -->
+<audio id="music" loop="" preload="metadata" playsinline="" webkit-playsinline="" src="assets/musik-baptisan.mp3"></audio>
 <script>function escapeText(v){return String(v).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}</script>
-<script id="invite-data" type="application/json">{"namaAnak":"Jesslyn Imanuella Faith Lintong","panggilan":"Bapak / Ibu / Saudara/i","namaAnakShort":"Jesslyn","usiaKe":"1","orangtua":"Papa Denis Lintong &amp; Mama Sherina Mongilala","quote":"Setiap tahun adalah anugerah, setiap tawa adalah doa yang terkabul.","tahunTeks":"2026","fotoUtama":"assets/f1.jpeg","fotoWajah":"assets/f5.jpeg","tanggalISO":"2026-11-01T15:00:00+08:00","tanggalSelesaiISO":"","hariTanggal":"Minggu, 1 November 2026","jam":"15.00 WITA","catatanWaktu":"Acara bersifat ramah anak (kids friendly)","namaTempat":"DOMINIC FURNITURE &amp; INTERIOR","alamat":"Leilem 3 Jaga 1, belakang Warung Vibra, Jalan Raya, Kabupaten Minahasa, Sulawesi Utara 95691","maps":"https://maps.app.goo.gl/ZdrHnYuSuPsRi2w47?g_st=iwb","tema":"PUTIH","dresscode":"PUTIH","pembukaSalam":"Salam Sejahtera","pembukaTeks":"Halo teman-teman! 🎈 Aku Jesslyn mau merayakan ulang tahunku yang ke-1. Yuk, datang ke pestaku!","penutupTeks":"Ditunggu kehadirannya ya! Jangan lupa konfirmasi di Formulir konfirmasi kehadiran (RSVP) di atas. Sampai jumpa di pesta! 🎉","penutupNama":"Keluarga Lintong &ndash; Mongilala","batasKonfirmasi":"","waNomor":"6289698567184","linkUndangan":"","tampilHadiah":false,"tampilGaleri":true,"musikAktif":true,"rundown":[{"jam":"15.00 – 15.15","judul":"🎈 Penyambutan Tamu","ket":"Welcome to the Party!"},{"jam":"15.15 – 15.25","judul":"🎤 Pembukaan Acara","ket":"Let's Start the Celebration!"},{"jam":"15.25 – 15.40","judul":"🙏 Ibadah Doa & Ucapan Syukur","ket":"Blessings for Jesslyn"},{"jam":"15.40 – 16.00","judul":"🎂 Tiup Lilin & Potong Kue","ket":"Happy 1st Birthday!"},{"jam":"16.00 – 16.30","judul":"🎁 Games & Doorprize","ket":"Fun Time Together!"},{"jam":"16.30 – 17.00","judul":"📸 Foto Bersama & Ramah Tamah","ket":"Capture the Sweet Moments!"},{"jam":"17.00","judul":"💝 Penutupan","ket":"Thank You for Coming!"}],"galeri":[{"foto":"assets/f2.jpeg","judul":"Keceriaan Bersama","wide":true},{"foto":"assets/f3.jpeg","judul":"Kebersamaan Keluarga","wide":false},{"foto":"assets/f4.jpeg","judul":"Senyum Manis Jesslyn","wide":false}],"ucapan":[],"hadiah":[],"catatanHadiah":"Kado fisik dapat dikirimkan ke alamat acara. Terima kasih atas cinta dan perhatiannya. &#9825;","catatan":["Mohon konfirmasi kehadiran melalui formulir di atas.","Acara bersifat ramah anak. Mohon anak-anak didampingi oleh orang tua/wali masing-masing.","Area parkir tersedia di lokasi acara dan dibantu oleh petugas.","Mohon menjaga kebersihan serta ketertiban selama acara berlangsung."]}</script>
+<script id="invite-data" type="application/json">{"namaAnak":"Jesslyn Imanuella Faith Lintong","panggilan":"Bapak / Ibu / Saudara/i","namaAnakShort":"Jesslyn","usiaKe":"1","orangtua":"Papa Denis Lintong &amp; Mama Sherina Mongilala","quote":"Biarlah anak-anak itu datang kepada-Ku, jangan menghalang-halangi mereka. — Markus 10:14","tahunTeks":"2026","fotoUtama":"assets/f1.jpeg","fotoWajah":"assets/f5.jpeg","tanggalISO":"2026-11-01T13:00:00+08:00","tanggalSelesaiISO":"","hariTanggal":"Minggu, 1 November 2026","jam":"13.00 WITA","catatanWaktu":"Mohon hadir tepat waktu untuk mengikuti acara baptisan","namaTempat":"DOMINIC FURNITURE &amp; INTERIOR","alamat":"Rumah ke 3 dari, Leilem 3 jaga 1 belakang warung vibra, jalan raya, Kabupaten Minahasa, Sulawesi Utara 95691","maps":"https://www.google.com/maps?cid=13447757939872876733","tempatBaptisan":"Gereja GMIM IMANUEL LEILEM","namaGereja":"GMIM IMANUEL LEILEM","jamIbadahGereja":"Jam 9.30","alamatGereja":"Jl. Raya Tomohon–Kawangkoan (Jl. Kawangkoan–Tomohon), Desa Leilem, Kecamatan Sonder, Kabupaten Minahasa, Sulawesi Utara","mapsGereja":"https://maps.app.goo.gl/L5FySy4gYsjD26bw5?g_st=iwb","tema":"PUTIH","dresscode":"PUTIH","pembukaSalam":"Salam Sejahtera","pembukaTeks":"Dengan penuh syukur atas kasih dan penyertaan Tuhan Yesus Kristus, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara Baptisan Kudus putri tercinta kami, Jesslyn Imanuella Faith Lintong. Kehadiran serta doa Bapak/Ibu/Saudara/i kiranya menjadi berkat dalam perjalanan iman dan kehidupannya.","penutupTeks":"Dengan penuh sukacita, kami berharap Bapak/Ibu/Saudara/i berkenan hadir dan turut mendoakan Jesslyn dalam momen Baptisan Kudus ini. Semoga kasih dan penyertaan Tuhan senantiasa menaungi setiap langkah hidupnya. Atas doa serta kehadirannya, kami mengucapkan terima kasih.","penutupNama":"Keluarga Lintong &ndash; Mongilala","batasKonfirmasi":"","waNomor":"6281234567890","linkUndangan":"","tampilHadiah":false,"tampilGaleri":true,"musikAktif":true,"rundown":[{"jam":"1.","judul":"Pembukaan &amp; Sambutan","ket":"Ucapan selamat datang dari keluarga."},{"jam":"2.","judul":"Ibadah, Doa Syukur &amp; Berkat","ket":"Doa bersama sebagai ungkapan syukur kepada Tuhan lewat pemberitaan firman dan doa."},{"jam":"3.","judul":"Ucapan Syukur Keluarga","ket":"Ungkapan kebahagiaan dan terima kasih dari orang tua."},{"jam":"4.","judul":"Ramah Tamah &amp; Santap Kasih","ket":"Menikmati hidangan bersama keluarga dan para tamu undangan."},{"jam":"5.","judul":"Foto Bersama","ket":"Mengabadikan momen penuh kebahagiaan."},{"jam":"6.","judul":"Penutup","ket":"Ucapan terima kasih Keluarga"}],"galeri":[{"foto":"assets/f2.jpeg","judul":"Momen Bahagia Jesslyn","wide":true},{"foto":"assets/f3.jpeg","judul":"Kebersamaan Keluarga","wide":false},{"foto":"assets/f4.jpeg","judul":"Senyum Manis Jesslyn","wide":false}],"ucapan":[],"hadiah":[],"catatanHadiah":"Kado fisik dapat dikirimkan ke alamat acara. Terima kasih atas cinta dan perhatiannya. &#9825;","catatan":["Mohon konfirmasi kehadiran melalui formulir di atas.","Acara bersifat ramah anak. Mohon anak-anak didampingi oleh orang tua/wali masing-masing.","Area parkir tersedia di lokasi acara dan dibantu oleh petugas.","Mohon menjaga kebersihan serta ketertiban selama acara berlangsung."]}</script>
 <script>
 /* =============================================================
    ██  DATA UNDANGAN  ██
@@ -766,22 +832,28 @@ var DATA = {
   namaAnakShort: "Jesslyn",                     // nama pendek (untuk footer)
   usiaKe:        "1",                          // angka usia
   orangtua:      "Papa Denis Lintong &amp; Mama Sherina Mongilala",
-  quote:         "Setiap tahun adalah anugerah, setiap tawa adalah doa yang terkabul.",
+  quote:         "Biarlah anak-anak itu datang kepada-Ku, jangan menghalang-halangi mereka. — Markus 10:14",
   tahunTeks:     "2026",
 
-  // Foto: tempel URL foto di sini (https://...) atau biarkan bawaan tema kelinci.
+  // Foto sampul disertakan langsung agar tetap tampil saat file dibagikan.
   fotoUtama:     "assets/f1.jpeg",
   fotoWajah:     "assets/f5.jpeg",
 
   /* ---------- 2. WAKTU & TEMPAT ---------- */
-  tanggalISO:       "2026-11-01T15:00:00+08:00",   // format: TAHUN-BULAN-TANGGAL T jam:menit:detik+zona (WITA = +08:00)
+  tanggalISO:       "2026-11-01T13:00:00+08:00",   // format: TAHUN-BULAN-TANGGAL T jam:menit:detik+zona (WITA = +08:00)
   tanggalSelesaiISO:"",   // untuk "Simpan ke Kalender"
   hariTanggal:      "Minggu, 1 November 2026",
-  jam:              "15.00 WITA",
-  catatanWaktu:     "Acara bersifat ramah anak (kids friendly)",
+  jam:              "13.00 WITA",
+  catatanWaktu:     "Mohon hadir tepat waktu untuk mengikuti acara baptisan",
   namaTempat:       "DOMINIC FURNITURE &amp; INTERIOR",
-  alamat:           "Leilem 3 Jaga 1, belakang Warung Vibra, Jalan Raya, Kabupaten Minahasa, Sulawesi Utara 95691",
-  maps:             "https://maps.app.goo.gl/ZdrHnYuSuPsRi2w47?g_st=iwb",
+  alamat:           "Jaga 3, belakang SMP, Leilem Tiga, Kecamatan Sonder, Kabupaten Minahasa, Sulawesi Utara 95691",
+  maps:             "https://www.google.com/maps?cid=13447757939872876733",
+  tempatBaptisan:   "",   // kosong; isi nanti melalui tombol Edit Undangan
+  namaGereja:       "",   // kosong; isi nanti melalui tombol Edit Undangan
+  jamIbadahGereja:  "",   // contoh setelah diisi: 09.00 WITA
+  alamatGereja:     "",   // kosong; isi nanti melalui tombol Edit Undangan
+  mapsGereja:       "",   // tautan Google Maps gereja (opsional)
+
   tema:             "PUTIH",
   dresscode:        "PUTIH",
 
@@ -790,13 +862,13 @@ var DATA = {
   pembukaSalam: "Salam Sejahtera",
   // pembukaSalam: "Salam sejahtera bagi kita semua / Shalom",
   // pembukaSalam: "Om Swastyastu / Namo Buddhaya",
-  pembukaTeks: "Halo teman-teman! 🎈 Aku Jesslyn mau merayakan ulang tahunku yang ke-1. Yuk, datang ke pestaku!",
-  penutupTeks: "Ditunggu kehadirannya ya! Jangan lupa konfirmasi di Formulir konfirmasi kehadiran (RSVP) di atas. Sampai jumpa di pesta! 🎉",
+  pembukaTeks: "Dengan penuh syukur atas kasih dan penyertaan Tuhan Yesus Kristus, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri acara Baptisan Kudus putri tercinta kami, Jesslyn Imanuella Faith Lintong. Kehadiran serta doa Bapak/Ibu/Saudara/i kiranya menjadi berkat dalam perjalanan iman dan kehidupannya.",
+  penutupTeks: "Dengan penuh sukacita, kami berharap Bapak/Ibu/Saudara/i berkenan hadir dan turut mendoakan Jesslyn dalam momen Baptisan Kudus ini. Semoga kasih dan penyertaan Tuhan senantiasa menaungi setiap langkah hidupnya. Atas doa serta kehadirannya, kami mengucapkan terima kasih.",
   penutupNama: "Keluarga Lintong &ndash; Mongilala",
   batasKonfirmasi: "",
 
   /* ---------- 4. KONFIRMASI & BAGIKAN ---------- */
-  waNomor: "6289698567184",   // nomor WhatsApp keluarga, awali 62 tanpa tanda + (contoh: 6281234567890)
+  waNomor: "6281234567890",   // nomor WhatsApp keluarga, awali 62 tanpa tanda + (contoh: 6281234567890)
   linkUndangan: "",           // (opsional) link undangan untuk tombol bagikan. Kosongkan = otomatis.
 
   /* ---------- 5. TAMPILKAN / SEMBUNYIKAN BAGIAN ---------- */
@@ -806,18 +878,16 @@ var DATA = {
 
   /* ---------- 6. SUSUNAN ACARA ---------- */
   rundown: [
-    { jam: "15.00 – 15.15", judul: "🎈 Penyambutan Tamu", ket: "Welcome to the Party!" },
-    { jam: "15.15 – 15.25", judul: "🎤 Pembukaan Acara", ket: "Let's Start the Celebration!" },
-    { jam: "15.25 – 15.40", judul: "🙏 Ibadah Doa & Ucapan Syukur", ket: "Blessings for Jesslyn" },
-    { jam: "15.40 – 16.00", judul: "🎂 Tiup Lilin & Potong Kue", ket: "Happy 1st Birthday!" },
-    { jam: "16.00 – 16.30", judul: "🎁 Games & Doorprize", ket: "Fun Time Together!" },
-    { jam: "16.30 – 17.00", judul: "📸 Foto Bersama & Ramah Tamah", ket: "Capture the Sweet Moments!" },
-    { jam: "17.00", judul: "💝 Penutupan", ket: "Thank You for Coming!" },
+    {"jam": "1.", "judul": "Pembukaan &amp; Sambutan", "ket": "Ucapan selamat datang dari keluarga."},
+    {"jam": "2.", "judul": "Ibadah, Doa Syukur &amp; Berkat", "ket": "Doa bersama sebagai ungkapan syukur kepada Tuhan lewat pemberitaan firman dan doa."},
+    {"jam": "3.", "judul": "Ucapan Syukur Keluarga", "ket": "Ungkapan kebahagiaan dan terima kasih dari orang tua."},
+    {"jam": "4.", "judul": "Ramah Tamah &amp; Santap Kasih", "ket": "Menikmati hidangan bersama keluarga dan para tamu undangan."},
+    {"jam": "5.", "judul": "Foto Bersama", "ket": "Mengabadikan momen penuh kebahagiaan."},
+    {"jam": "6.", "judul": "Penutup", "ket": "Ucapan terima kasih Keluarga"}
   ],
-
   /* ---------- 7. GALERI FOTO ---------- */
   // Kosongkan foto ("") untuk memakai bingkai contoh. Isi dengan URL foto untuk menampilkannya.
-  galeri: [{"foto":"assets/f2.jpeg","judul":"Keceriaan Bersama","wide":true},{"foto":"assets/f3.jpeg","judul":"Kebersamaan Keluarga","wide":false},{"foto":"assets/f4.jpeg","judul":"Senyum Manis Jesslyn","wide":false}],
+  galeri: [{"foto":"assets/f2.jpeg","judul":"Momen Bahagia Jesslyn","wide":true},{"foto":"assets/f3.jpeg","judul":"Kebersamaan Keluarga","wide":false},{"foto":"assets/f4.jpeg","judul":"Senyum Manis Jesslyn","wide":false}],
 
   /* ---------- 8. UCAPAN YANG SUDAH MASUK (contoh, silakan ganti/hapus) ---------- */
   ucapan: [],
@@ -889,7 +959,7 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
     box.innerHTML = DATA.galeri.map(function(g){
       var cls = "g-item" + (g.wide ? " wide" : "");
       if(g.foto){
-        return '<figure class="'+cls+'" style="margin:0"><img loading="lazy" decoding="async" src="'+g.foto+'" alt="'+g.judul+'">'+
+        return '<figure class="'+cls+'" style="margin:0"><img src="'+g.foto+'" alt="'+g.judul+'">'+
                '<figcaption class="cap-bar">'+g.judul+'</figcaption></figure>';
       }
       return '<figure class="'+cls+'" style="margin:0"><div class="ph">'+
@@ -956,18 +1026,18 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
   /* --- 9. Simpan ke kalender (.ics) --- */
   function icsDate(iso){ return new Date(iso).toISOString().replace(/[-:]/g,"").replace(/\.\d{3}Z/,"Z"); }
   function simpanKalender(){
-    var judul = "Ulang Tahun " + DATA.namaAnak;
+    var judul = "Baptisan Kudus " + DATA.namaAnak;
     var isi = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Undangan Digital//ID","CALSCALE:GREGORIAN",
       "BEGIN:VEVENT","UID:"+Date.now()+"@undangan",
       "DTSTAMP:"+icsDate(new Date().toISOString().slice(0,19)+"Z"),
       "DTSTART:"+icsDate(DATA.tanggalISO),...(DATA.tanggalSelesaiISO ? ["DTEND:"+icsDate(DATA.tanggalSelesaiISO)] : []),
       "SUMMARY:"+judul.replace(/&[a-z]+;/g,""),
       "LOCATION:"+(DATA.namaTempat+", "+DATA.alamat).replace(/&[a-z]+;/g,""),
-      "DESCRIPTION:"+(DATA.tema+". "+DATA.dresscode).replace(/&[a-z]+;/g,""),
+      "DESCRIPTION:"+"Baptisan Kudus dan syukuran bersama keluarga.",
       "END:VEVENT","END:VCALENDAR"].join("\r\n");
     try{
       var url = URL.createObjectURL(new Blob([isi],{type:"text/calendar;charset=utf-8"}));
-      var a = d.createElement("a"); a.href = url; a.download = "ulang-tahun-"+DATA.namaAnakShort+".ics";
+      var a = d.createElement("a"); a.href = url; a.download = "baptisan-"+DATA.namaAnakShort+".ics";
       d.body.appendChild(a); a.click(); a.remove();
       setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
     }catch(e){ alert("Silakan buka file undangan ini di browser untuk menyimpan ke kalender."); }
@@ -1032,7 +1102,7 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
     var teks = "Halo, saya " + u.nama + ".\n" +
       "Konfirmasi kehadiran: " + u.hadir + ".\n" +
       (u.ucapan ? "Ucapan & doa: " + u.ucapan + "\n" : "") +
-      "Terima kasih. \u2014 Undangan Ulang Tahun " + DATA.namaAnak + " (" + DATA.usiaKe + " tahun)";
+      "Terima kasih. \u2014 Undangan Baptisan Kudus " + DATA.namaAnak;
     var no = (DATA.waNomor||"").replace(/[^0-9]/g,"");
     if(!no){ alert("Nomor WhatsApp keluarga belum diisi. Buka bagian DATA lalu isi waNomor."); return; }
     window.open("https://wa.me/"+no+"?text="+encodeURIComponent(teks), "_blank");
@@ -1051,11 +1121,11 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
   /* --- 13. Bagikan --- */
   var shareFab = q("#shareFab");
   if(shareFab) shareFab.addEventListener("click", function(){
-    if(location.protocol === "file:" && !DATA.linkUndangan){ alert("Bagikan file undangan-tamu.html melalui WhatsApp, atau unggah ke hosting lalu isi URL undangan online di panel edit."); return; }
-    var link = DATA.linkUndangan ? DATA.linkUndangan.split("#")[0] : location.href.split(/[?#]/)[0];
-    var teks = "Undangan Ulang Tahun " + DATA.namaAnak + " yang ke-" + DATA.usiaKe + " \u2014 " +
+    if(location.protocol === "file:" && !DATA.linkUndangan){ alert("Bagikan file undangan-baptisan-tamu.html melalui WhatsApp, atau unggah ke hosting lalu isi URL undangan online di panel edit."); return; }
+    var link = DATA.linkUndangan || location.href.split("?")[0];
+    var teks = "Undangan Baptisan Kudus " + DATA.namaAnak + " \u2014 " +
                DATA.hariTanggal + ". Buka undangan digitalnya di sini: " + link;
-    if(navigator.share){ navigator.share({ title:"Undangan Ulang Tahun", text:teks, url:link }).catch(function(){}); }
+    if(navigator.share){ navigator.share({ title:"Undangan Baptisan Kudus", text:teks, url:link }).catch(function(){}); }
     else window.open("https://wa.me/?text="+encodeURIComponent(teks), "_blank");
   });
 
@@ -1139,39 +1209,60 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
     bindText(); guest(); rundown(); galeri(); ucapan(); hadiah(); catatan();
     q('#galeri').style.display = DATA.tampilGaleri ? '' : 'none';
     d.querySelector('[data-target="galeri"]').style.display = DATA.tampilGaleri ? '' : 'none';
-    d.title = 'Undangan Ulang Tahun — ' + DATA.namaAnak;
-    var plainVenue = d.createElement('textarea');
-    plainVenue.innerHTML = DATA.namaTempat + (DATA.alamat ? ', ' + DATA.alamat : '');
-    var venueQuery = plainVenue.value;
-    // Sematkan listing Google Maps yang SAMA dengan tautan RSVP/QR.
-    // CID 13447757939872876733 diambil dari ID tempat tautan lokasi yang diberikan.
-    var mapCID = (DATA.maps || '').match(/[?&]cid=(\d+)/);
-    var isDominic = (DATA.maps || '').indexOf('maps.app.goo.gl/ZdrHnYuSuPsRi2w47') !== -1 ||
-                    (mapCID && mapCID[1] === '13447757939872876733');
-    var customQuery = (DATA.maps || '').match(/[?&](?:q|query)=([^&#]+)/);
-    var embedQuery = venueQuery;
-    if(customQuery && !isDominic) {
-      try { embedQuery = decodeURIComponent(customQuery[1].replace(/\+/g, ' ')); } catch(e) {}
+    d.title = 'Undangan Baptisan Kudus — ' + DATA.namaAnak;
+    // Apple Maps menggunakan URL web universal yang ditangani oleh Safari/iOS.
+    // Hindari skema maps:// dan window.open(): keduanya dapat gagal dalam pratinjau iPhone.
+    function decodeForMap(value){
+      var t = d.createElement('textarea'); t.innerHTML = value || ''; return t.value.trim();
     }
-    var mapURL = isDominic
-      ? 'https://maps.google.com/maps?hl=id&q=' + encodeURIComponent('Dominic Furniture & Interior, Leilem 3 Jaga 1, Sonder, Minahasa, Sulawesi Utara 95691') + '&z=17&output=embed'
-      : 'https://maps.google.com/maps?hl=id&q=' + encodeURIComponent(embedQuery) + '&z=17&output=embed';
-    var iframe = q('#venueMap');
-    if(iframe && iframe.getAttribute('src') !== mapURL) iframe.setAttribute('src',mapURL);
-    if(iframe) iframe.title = 'Peta lokasi ' + DATA.namaTempat;
-    var locationLink = DATA.maps || 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(venueQuery);
-    ['#mapsBtn','#venueMapLink','#venueMapOverlay'].forEach(function(id){
-      var link = q(id); if(!link) return;
-      link.href = locationLink;
-      // Buka di tab yang sama pada iPhone; tab baru dari pratinjau file sering diblokir.
-      if(/iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
-        link.removeAttribute('target');
-      } else { link.setAttribute('target','_blank'); }
-      link.setAttribute('rel','noopener noreferrer');
-    });
-    var isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    // Jangan otomatis menyembunyikan iframe peta pada Safari iPhone / file://.
+    var isiOSDevice = /iPad|iPhone|iPod/i.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    d.body.classList.toggle('ios-device', isiOSDevice);
 
+    var venueName = decodeForMap(DATA.namaTempat);
+    var venueAddress = decodeForMap(DATA.alamat);
+    var venueQuery = [venueName, venueAddress].filter(Boolean).join(', ');
+    var mapQuery = venueQuery || 'Leilem Tiga, Kecamatan Sonder, Minahasa, Sulawesi Utara';
+    var mapURL = 'https://maps.google.com/maps?q=' + encodeURIComponent(mapQuery) + '&z=16&output=embed';
+    var venueFrame = q('#venueMap');
+    if(venueFrame && venueFrame.getAttribute('src') !== mapURL) venueFrame.setAttribute('src', mapURL);
+    if(venueFrame) venueFrame.title = 'Peta lokasi ' + mapQuery;
+
+    // Google CID mempertahankan titik tempat resmi; tidak mengubahnya menjadi perkiraan.
+    var searchUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(mapQuery);
+    var suppliedMapURL = decodeForMap(DATA.maps);
+    var googleVenueURL = /^https:\/\//i.test(suppliedMapURL) ? suppliedMapURL : searchUrl;
+    var venueGoogle = q('#venueMapLink');
+    venueGoogle.href = googleVenueURL;
+    venueGoogle.removeAttribute('target'); // tautan langsung lebih aman untuk Safari iPhone
+
+    // Gunakan Google Maps untuk lokasi resepsi pada semua perangkat, termasuk Safari iPhone.
+    var primaryMap = q('#mapsBtn');
+    primaryMap.href = googleVenueURL;
+    primaryMap.removeAttribute('target');
+    q('#mapsBtnLabel').textContent = 'Buka Google Maps';
+    q('#venueAddressText').textContent = venueAddress || venueName;
+
+    // Lokasi gereja dibuka melalui Google Maps.
+    var churchQuery = [DATA.namaGereja, DATA.alamatGereja].map(decodeForMap).filter(Boolean).join(', ');
+    var churchProvidedURL = decodeForMap(DATA.mapsGereja);
+    var googleChurchURL = /^https:\/\//i.test(churchProvidedURL) ? churchProvidedURL :
+      (churchQuery ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(churchQuery) : '#');
+    var churchBtn = q('#churchMapsBtn');
+    var churchNote = q('#churchMapsNote');
+    var churchAvailable = googleChurchURL !== '#';
+    if(churchBtn){
+      churchBtn.href = googleChurchURL;
+      churchBtn.removeAttribute('target');
+      churchBtn.classList.toggle('is-disabled', !churchAvailable);
+      churchBtn.setAttribute('aria-disabled', churchAvailable ? 'false' : 'true');
+      churchBtn.tabIndex = churchAvailable ? 0 : -1;
+    }
+    if(churchNote){
+      churchNote.textContent = churchAvailable
+        ? 'Ketuk Buka Maps Gereja untuk melihat lokasi gereja.'
+        : 'Lokasi dan Maps gereja dapat diisi melalui menu Edit Undangan.';
+    }
     if(!DATA.musikAktif && audio) audio.pause();
   };
   refreshInvitation(); countdown();
@@ -1179,7 +1270,8 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
   var y = q("#icsBtn"); if(y && !y.dataset.t) y.dataset.t = 1;
 })();
 </script>
-<dialog id="photoViewer" aria-label="Pratinjau foto"><div class="row"><button id="photoPrev" aria-label="Foto sebelumnya">←</button><button id="photoNext" aria-label="Foto berikutnya">→</button><button id="photoClose">Tutup ✕</button></div><img loading="lazy" decoding="async" id="photoLarge" alt=""><p id="photoCaption"></p></dialog>
+
+<dialog id="photoViewer" aria-label="Pratinjau foto"><div class="row"><button id="photoPrev" aria-label="Foto sebelumnya">←</button><button id="photoNext" aria-label="Foto berikutnya">→</button><button id="photoClose">Tutup ✕</button></div><img id="photoLarge" alt=""><p id="photoCaption"></p></dialog>
 <script id="guestGalleryScript">(function(){
 function guestGallery(){let index=0,figures=[];const viewer=document.getElementById('photoViewer');function show(i){figures=[...document.querySelectorAll('#galleryGrid figure')].filter(f=>f.querySelector('img'));if(!figures.length)return;index=(i+figures.length)%figures.length;const img=figures[index].querySelector('img');document.getElementById('photoLarge').src=img.src;document.getElementById('photoLarge').alt=img.alt;document.getElementById('photoCaption').textContent=img.alt;if(!viewer.open)viewer.showModal()}document.querySelectorAll('#galleryGrid figure').forEach(f=>{if(!f.querySelector('img'))return;f.tabIndex=0;f.setAttribute('role','button');f.setAttribute('aria-label','Perbesar '+f.querySelector('img').alt);f.onclick=()=>{figures=[...document.querySelectorAll('#galleryGrid figure')].filter(x=>x.querySelector('img'));show(figures.indexOf(f))};f.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f.click()}}});document.getElementById('photoClose').onclick=()=>viewer.close();document.getElementById('photoPrev').onclick=()=>show(index-1);document.getElementById('photoNext').onclick=()=>show(index+1);viewer.onkeydown=e=>{if(e.key==='ArrowLeft')show(index-1);if(e.key==='ArrowRight')show(index+1)}}
 guestGallery();
@@ -1187,4 +1279,4 @@ guestGallery();
 
 
 
-</body></html>
+<a href="blob:null/129e01a6-fb5b-43e9-aa1f-2ed578e37770" download="undangan-baptisan-tamu.html" style="display: none;"></a></body></html>
