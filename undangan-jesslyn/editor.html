@@ -154,6 +154,18 @@ section{position:relative;padding:74px 0}
 }
 .to-card .guest-salutation{font:12px/1.6 var(--font-ui);color:var(--ink-soft);margin:6px 0}
 .to-card .guest{font-family:var(--font-display);font-size:clamp(24px,6.5vw,32px);font-weight:600;line-height:1.3;color:#5E4241;margin:6px 0 10px;overflow-wrap:anywhere}
+.quick-guest-tools{margin-top:16px;padding-top:16px;border-top:1px solid rgba(198,161,91,.3);text-align:left;font:13px/1.6 var(--font-ui)}
+.quick-guest-tools[hidden],#quickGuestLaunch[hidden]{display:none!important}
+.quick-guest-tools label{display:block;font-weight:600;margin-bottom:7px;color:#5E4241}
+.quick-guest-tools input{display:block;width:100%;min-height:48px;padding:12px 13px;border:1px solid #d8bfb8;border-radius:12px;background:#fff;color:#5E4241;font:16px var(--font-ui)}
+.quick-guest-send{display:flex;justify-content:center;align-items:center;min-height:48px;margin-top:12px;padding:12px 16px;border-radius:12px;background:#23754a;color:#fff;font:600 14px/1.5 var(--font-ui);text-decoration:none}
+.quick-guest-send[aria-disabled="true"]{opacity:.5;cursor:default}
+.quick-guest-tools input:focus-visible,.quick-guest-send:focus-visible,#quickGuestLaunch:focus-visible{outline:3px solid #A87432;outline-offset:3px}
+.quick-guest-tools p{margin:9px 0 0;color:var(--ink-soft);font-size:12px}
+#quickGuestLaunch{margin-top:14px;padding:9px 16px;border:1px solid #c6a15b;border-radius:999px;background:#fff8ef;color:#6d4546;font:600 13px var(--font-ui)}
+body.sending-invitation #gate .gate-inner{display:flex;flex-direction:column;padding-top:max(24px,env(safe-area-inset-top))}
+body.sending-invitation #gate .gate-inner>.eyebrow:first-child{order:-2}
+body.sending-invitation #gate .to-card{order:-1;width:100%;margin:0 auto 22px}
 .btn{
   display:inline-flex;align-items:center;gap:10px;justify-content:center;
   padding:15px 34px;border-radius:999px;font-family:var(--font-ui);font-size:12.5px;
@@ -543,6 +555,13 @@ body.opened #gate{display:none!important}
         <p class="guest-salutation" data-f="panggilan">Bapak / Ibu / Saudara/i</p>
         <p class="guest" id="guestName">Nama Tamu / Keluarga</p>
         <p class="lead" style="font-size:13px;margin:2px 0 0">Mohon maaf apabila ada kesalahan penulisan nama &amp; gelar</p>
+        <button id="quickGuestLaunch" type="button" hidden>Edit Nama &amp; Kirim</button>
+        <div id="quickGuestTools" class="quick-guest-tools" hidden>
+          <label for="quickGuestName">Nama tamu / keluarga</label>
+          <input id="quickGuestName" type="text" placeholder="Contoh: Keluarga Budi" autocomplete="off" enterkeyhint="send" aria-describedby="quickGuestStatus">
+          <a id="quickGuestSend" class="quick-guest-send" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">Kirim via WhatsApp</a>
+          <p id="quickGuestStatus" role="status" aria-live="polite">Ketik nama, lalu pilih kontak penerima di WhatsApp.</p>
+        </div>
       </div>
       <div class="cover-verse" aria-label="Ayat Alkitab">
         <span class="verse-text">“Biarlah anak-anak itu datang kepada-Ku, jangan menghalang-halangi mereka.”</span>
@@ -952,13 +971,45 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
   }
 
   /* --- 2. Nama tamu dari tautan (?to=Nama%20Tamu) --- */
+  function invitationText(value){
+    var text=d.createElement("textarea");text.innerHTML=value||"";return text.value;
+  }
+  function guestInvitationLink(name){
+    var url=new URL(DATA.linkUndangan||"./",location.href);
+    url.hash="";url.searchParams.delete("edit");url.searchParams.delete("to");
+    if(name)url.searchParams.set("to",name);
+    return url.href;
+  }
+  function guestInvitationMessage(name,link){
+    return "Salam sejahtera,\n\nKepada Yth.\n"+(name||"Bapak/Ibu/Saudara/i")+
+      "\n\nDengan penuh syukur, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri Baptisan Kudus "+invitationText(DATA.namaAnak)+".\n\n"+
+      invitationText(DATA.hariTanggal)+", pukul "+invitationText(DATA.jam)+"\n"+invitationText(DATA.namaTempat)+
+      "\n\nSilakan buka undangan berikut:\n"+link+"\n\nKehadiran serta doa Bapak/Ibu/Saudara/i menjadi kebahagiaan bagi kami. Terima kasih.";
+  }
+  window.guestInvitationLink=guestInvitationLink;
+  window.guestInvitationMessage=guestInvitationMessage;
   function guest(){
-    var nm = (new URLSearchParams(location.search).get("to") || "").trim();
-    if(!nm){
-      var text = d.createElement("textarea"); text.innerHTML = DATA.namaTamu || "";
-      nm = text.value.trim();
+    var params=new URLSearchParams(location.search),queryName=(params.get("to")||"").trim();
+    var nm=queryName||invitationText(DATA.namaTamu).trim();
+    var g=q("#guestName"),tools=q("#quickGuestTools"),input=q("#quickGuestName"),send=q("#quickGuestSend"),launch=q("#quickGuestLaunch"),status=q("#quickGuestStatus");
+    if(g)g.textContent=nm||"Nama Tamu / Keluarga";
+    if(!tools||!input||!send||!launch||!status)return;
+    var editing=params.get("edit")==="1"||/\/editor\.html$/.test(location.pathname);
+    tools.hidden=!editing;launch.hidden=editing||!!queryName;d.body.classList.toggle("sending-invitation",editing);
+    if(!input.dataset.edited)input.value=nm;
+    function update(){
+      var name=input.value.trim();
+      if(editing&&g)g.textContent=name||"Nama Tamu / Keluarga";
+      send.setAttribute("aria-disabled",name?"false":"true");send.tabIndex=name?0:-1;
+      if(name){send.href="https://wa.me/?text="+encodeURIComponent(guestInvitationMessage(name,guestInvitationLink(name)));}
+      else send.removeAttribute("href");
+      status.textContent=name?"Siap dikirim untuk: "+name+". Pilih kontak penerima di WhatsApp.":"Ketik nama, lalu pilih kontak penerima di WhatsApp.";
     }
-    var g = q("#guestName"); if(g) g.textContent = nm || "Nama Tamu / Keluarga";
+    input.oninput=function(){input.dataset.edited="1";update();};
+    input.onkeydown=function(event){if(event.key==="Enter"){event.preventDefault();if(input.value.trim())send.click();}};
+    send.onclick=function(event){if(!input.value.trim()){event.preventDefault();input.focus();}};
+    launch.onclick=function(){var url=new URL(location.href);url.searchParams.set("edit","1");history.replaceState(history.state,"",url.href);guest();input.focus();};
+    update();
   }
 
   /* --- 3. Susunan acara --- */
@@ -1139,13 +1190,11 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
   var shareFab = q("#shareFab");
   if(shareFab) shareFab.addEventListener("click", function(){
     if(location.protocol === "file:" && !DATA.linkUndangan){ alert("Bagikan file undangan-baptisan-tamu.html melalui WhatsApp, atau unggah ke hosting lalu isi URL undangan online di panel edit."); return; }
-    var url = new URL(DATA.linkUndangan || location.href, location.href);
-    url.hash = "";
     var recipient = (new URLSearchParams(location.search).get("to") || "").trim();
-    if(recipient) url.searchParams.set("to", recipient);
-    var link = url.href;
-    var teks = "Undangan Baptisan Kudus " + DATA.namaAnak + " \u2014 " +
-               DATA.hariTanggal + ". Buka undangan digitalnya di sini: " + link;
+    var tools=q("#quickGuestTools"),input=q("#quickGuestName");
+    if(tools&&!tools.hidden&&input)recipient=input.value.trim();
+    var link = guestInvitationLink(recipient);
+    var teks = guestInvitationMessage(recipient,link);
     if(navigator.share){ navigator.share({ title:"Undangan Baptisan Kudus", text:teks, url:link }).catch(function(){}); }
     else window.open("https://wa.me/?text="+encodeURIComponent(teks), "_blank");
   });
@@ -1298,12 +1347,13 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
 <main><p>Sesuaikan isi undangan dan tambahkan foto. Klik <b>Terapkan</b> untuk pratinjau. Klik <b>Publikasikan ke GitHub</b> untuk memperbarui situs tamu online.</p><small>Data awal merupakan contoh. Pastikan nama, tanggal, dan nomor WhatsApp sudah benar sebelum dibagikan. Perubahan online tersimpan setelah publikasi berhasil. Jangan bagikan token GitHub kepada tamu.</small>
 <details open class="guest-link-panel">
 <summary>Buat tautan nama tamu / keluarga</summary>
-<p>Isi nama penerima, lalu salin tautannya untuk dibagikan. Nama akan tampil di cover khusus untuk penerima tersebut.</p>
+<p>Isi nama penerima, lalu pilih Kirim via WhatsApp. Nama akan tampil di cover khusus untuk penerima tersebut.</p>
 <label for="recipientInput">Nama tamu / keluarga</label>
 <input id="recipientInput" type="text" placeholder="Contoh: Keluarga Budi" autocomplete="off" />
 <label for="recipientLink">Tautan undangan untuk tamu ini</label>
 <input id="recipientLink" type="text" readonly spellcheck="false" />
-<div class="row"><button type="button" id="copyRecipientLink" class="primary" disabled>Salin tautan tamu</button><a id="previewRecipientLink" target="_blank" rel="noopener" hidden>Lihat cover tamu ↗</a></div>
+<a id="sendRecipientWhatsapp" class="quick-guest-send" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">Kirim via WhatsApp</a>
+<div class="row"><button type="button" id="copyRecipientLink" disabled>Salin tautan tamu</button><a id="previewRecipientLink" target="_blank" rel="noopener" hidden>Lihat cover tamu ↗</a></div>
 <p id="recipientStatus" role="status" aria-live="polite">Buat nama yang berbeda untuk setiap tautan, tanpa perlu publikasi ulang.</p>
 </details>
 <form id="editorForm"></form><div class="githubPanel">
@@ -1325,14 +1375,16 @@ let draft, dirty=false, busy=false;
 const groups=[['Data anak & keluarga',[['namaAnak','Nama lengkap anak'],['namaAnakShort','Nama panggilan anak'],['orangtua','Nama orang tua'],['panggilan','Sapaan sebelum nama tamu'],['namaTamu','Nama tamu / keluarga default (opsional)'],['quote','Kutipan'],['penutupNama','Nama keluarga'],['tahunTeks','Tahun footer']]],['Waktu & lokasi',[['tanggalISO','Mulai acara','datetime-local'],['tanggalSelesaiISO','Selesai acara (opsional)','datetime-local'],['namaTempat','Nama tempat'],['alamat','Alamat lengkap'],['maps','Tautan Google Maps','url'],['catatanWaktu','Catatan waktu'],['batasKonfirmasi','Batas konfirmasi'],['waNomor','Nomor WhatsApp (awali 62)'],['linkUndangan','URL undangan online (opsional)','url']]],['Informasi Baptisan (isi nanti)',[['tempatBaptisan','Tempat Baptisan'],['namaGereja','Nama Gereja'],['jamIbadahGereja','Jam Ibadah Gereja'],['alamatGereja','Alamat Gereja','textarea'],['mapsGereja','Tautan Google Maps Gereja','url']]],['Teks undangan',[['pembukaSalam','Salam pembuka'],['pembukaTeks','Isi pembuka','textarea'],['penutupTeks','Isi penutup','textarea']]]];
 function updateRecipientLink(){
  const name=$('recipientInput').value.trim();
- const url=new URL(DATA.linkUndangan||'./',location.href);url.hash='';url.searchParams.delete('to');
- if(name)url.searchParams.set('to',name);
- $('recipientLink').value=name?url.href:'';
+ const link=window.guestInvitationLink(name);
+ $('recipientLink').value=name?link:'';
  $('copyRecipientLink').disabled=!name;
- const preview=$('previewRecipientLink');preview.hidden=!name;if(name)preview.href=url.href;else preview.removeAttribute('href');
+ const send=$('sendRecipientWhatsapp');send.setAttribute('aria-disabled',name?'false':'true');send.tabIndex=name?0:-1;
+ if(name)send.href='https://wa.me/?text='+encodeURIComponent(window.guestInvitationMessage(name,link));else send.removeAttribute('href');
+ const preview=$('previewRecipientLink');preview.hidden=!name;if(name)preview.href=link;else preview.removeAttribute('href');
  $('recipientStatus').textContent=name?'Nama di cover: '+name:'Buat nama yang berbeda untuk setiap tautan, tanpa perlu publikasi ulang.';
 }
 $('recipientInput').oninput=updateRecipientLink;
+$('sendRecipientWhatsapp').onclick=event=>{if(!$('recipientInput').value.trim()){event.preventDefault();$('recipientInput').focus();}};
 $('copyRecipientLink').onclick=async()=>{
  const link=$('recipientLink');if(!link.value)return;
  try{await navigator.clipboard.writeText(link.value);$('recipientStatus').textContent='Tautan tamu berhasil disalin. Siap dibagikan.';}

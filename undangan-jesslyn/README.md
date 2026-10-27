@@ -12,6 +12,8 @@ Lokasi: undangan-jesslyn/
 - Editor: https://jeforoh03-cell.github.io/noelprint/undangan-jesslyn/editor.html
 
 ## Mengubah undangan secara online
+Cara cepat: buka `https://jeforoh03-cell.github.io/noelprint/undangan-jesslyn/?edit=1`, ketik **Nama tamu / keluarga** langsung di cover, lalu tekan **Kirim via WhatsApp** dan pilih kontak penerima. Pesan undangan dan tautan bernama penerima sudah disiapkan otomatis. Tautan yang dibagikan menampilkan cover tamu tanpa kolom pengiriman. Halaman utama juga menyediakan tombol **Edit Nama & Kirim**.
+
 Untuk membuat nama penerima pada cover, buka **Editor → Edit Undangan → Buat tautan nama tamu / keluarga**. Isi nama, lalu pilih **Salin tautan tamu**. Setiap tautan menampilkan nama penerima masing-masing tanpa publikasi ulang. Nama default untuk tautan tanpa penerima dapat diisi pada **Data anak & keluarga → Nama tamu / keluarga default (opsional)**.
 
 Contoh: `https://jeforoh03-cell.github.io/noelprint/undangan-jesslyn/?to=Keluarga%20Budi`
