@@ -152,7 +152,8 @@ section{position:relative;padding:74px 0}
   background:rgba(255,255,255,.72);border:1px solid rgba(198,161,91,.35);
   box-shadow:var(--shadow-card);backdrop-filter:blur(6px)
 }
-.to-card .guest{font-size:23px;color:#5E4241;margin-top:2px}
+.to-card .guest-salutation{font:12px/1.6 var(--font-ui);color:var(--ink-soft);margin:6px 0}
+.to-card .guest{font-family:var(--font-display);font-size:clamp(24px,6.5vw,32px);font-weight:600;line-height:1.3;color:#5E4241;margin:6px 0 10px;overflow-wrap:anywhere}
 .btn{
   display:inline-flex;align-items:center;gap:10px;justify-content:center;
   padding:15px 34px;border-radius:999px;font-family:var(--font-ui);font-size:12.5px;
@@ -537,6 +538,12 @@ body.opened #gate{display:none!important}
         <img data-src="fotoUtama" alt="Foto Jesslyn Imanuella Faith Lintong" src="assets/f1.jpeg">
       </div>
       <h1 class="gate-name script" data-f="namaAnak">Jesslyn Imanuella Faith Lintong</h1>
+      <div class="to-card" aria-label="Penerima undangan">
+        <p class="to-label">Kepada Yth.</p>
+        <p class="guest-salutation" data-f="panggilan">Bapak / Ibu / Saudara/i</p>
+        <p class="guest" id="guestName">Nama Tamu / Keluarga</p>
+        <p class="lead" style="font-size:13px;margin:2px 0 0">Mohon maaf apabila ada kesalahan penulisan nama &amp; gelar</p>
+      </div>
       <div class="cover-verse" aria-label="Ayat Alkitab">
         <span class="verse-text">“Biarlah anak-anak itu datang kepada-Ku, jangan menghalang-halangi mereka.”</span>
         <span class="verse-ref">Markus 10:14</span>
@@ -550,12 +557,6 @@ body.opened #gate{display:none!important}
       </div>
       <p class="lead" style="margin:0" data-f="hariTanggal">Minggu, 1 November 2026</p>
       <p class="eyebrow" style="margin-top:4px" data-f="jam">13.00 WITA</p>
-
-      <div class="to-card">
-        <p class="to-label">Kepada</p>
-        <p class="guest script" id="guestName">Bapak / Ibu / Saudara/i</p>
-        <p class="lead" style="font-size:13.5px;margin:2px 0 0">Mohon maaf apabila ada kesalahan penulisan nama &amp; gelar</p>
-      </div>
 
       <div class="btn-row">
         <a class="btn" id="openBtn" href="#pembuka">
@@ -841,7 +842,8 @@ var DATA = {
 
   /* ---------- 1. DATA UTAMA ---------- */
   namaAnak:      "Jesslyn Imanuella Faith Lintong",        // nama lengkap anak
-  panggilan:     "Bapak / Ibu / Saudara/i",    // tulisan "Kepada" bila nama tamu tidak diisi lewat link
+  panggilan:     "Bapak / Ibu / Saudara/i",    // sapaan sebelum nama tamu
+  namaTamu:      "",                         // nama default; ?to=Nama%20Tamu mengutamakan nama pada tautan
   namaAnakShort: "Jesslyn",                     // nama pendek (untuk footer)
   usiaKe:        "1",                          // angka usia
   orangtua:      "Papa Denis Lintong &amp; Mama Sherina Mongilala",
@@ -951,10 +953,12 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
 
   /* --- 2. Nama tamu dari tautan (?to=Nama%20Tamu) --- */
   function guest(){
-    var m = location.search.match(/[?&]to=([^&]*)/);
-    var nm = ""; try{nm = m ? decodeURIComponent(m[1].replace(/\+/g," ")) : "";}catch(e){nm = "";}
-    if(!nm){ nm = (DATA.panggilan || "Bapak / Ibu / Saudara/i"); }
-    var g = q("#guestName"); if(g) g.textContent = nm;
+    var nm = (new URLSearchParams(location.search).get("to") || "").trim();
+    if(!nm){
+      var text = d.createElement("textarea"); text.innerHTML = DATA.namaTamu || "";
+      nm = text.value.trim();
+    }
+    var g = q("#guestName"); if(g) g.textContent = nm || "Nama Tamu / Keluarga";
   }
 
   /* --- 3. Susunan acara --- */
@@ -1135,7 +1139,11 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
   var shareFab = q("#shareFab");
   if(shareFab) shareFab.addEventListener("click", function(){
     if(location.protocol === "file:" && !DATA.linkUndangan){ alert("Bagikan file undangan-baptisan-tamu.html melalui WhatsApp, atau unggah ke hosting lalu isi URL undangan online di panel edit."); return; }
-    var link = DATA.linkUndangan || location.href.split("?")[0];
+    var url = new URL(DATA.linkUndangan || location.href, location.href);
+    url.hash = "";
+    var recipient = (new URLSearchParams(location.search).get("to") || "").trim();
+    if(recipient) url.searchParams.set("to", recipient);
+    var link = url.href;
     var teks = "Undangan Baptisan Kudus " + DATA.namaAnak + " \u2014 " +
                DATA.hariTanggal + ". Buka undangan digitalnya di sini: " + link;
     if(navigator.share){ navigator.share({ title:"Undangan Baptisan Kudus", text:teks, url:link }).catch(function(){}); }
@@ -1287,7 +1295,18 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
 <button id="editLaunch" type="button">✎ Edit Undangan</button>
 <dialog id="inviteEditor" class="editor" aria-labelledby="editorTitle">
 <header><h2 id="editorTitle">Edit Undangan</h2><button id="closeEditor" aria-label="Tutup editor">✕</button></header>
-<main><p>Sesuaikan isi undangan dan tambahkan foto. Klik <b>Terapkan</b> untuk pratinjau. Klik <b>Publikasikan ke GitHub</b> untuk memperbarui situs tamu online.</p><small>Data awal merupakan contoh. Pastikan nama, tanggal, dan nomor WhatsApp sudah benar sebelum dibagikan. Perubahan online tersimpan setelah publikasi berhasil. Jangan bagikan token GitHub kepada tamu.</small><form id="editorForm"></form><div class="githubPanel">
+<main><p>Sesuaikan isi undangan dan tambahkan foto. Klik <b>Terapkan</b> untuk pratinjau. Klik <b>Publikasikan ke GitHub</b> untuk memperbarui situs tamu online.</p><small>Data awal merupakan contoh. Pastikan nama, tanggal, dan nomor WhatsApp sudah benar sebelum dibagikan. Perubahan online tersimpan setelah publikasi berhasil. Jangan bagikan token GitHub kepada tamu.</small>
+<details open class="guest-link-panel">
+<summary>Buat tautan nama tamu / keluarga</summary>
+<p>Isi nama penerima, lalu salin tautannya untuk dibagikan. Nama akan tampil di cover khusus untuk penerima tersebut.</p>
+<label for="recipientInput">Nama tamu / keluarga</label>
+<input id="recipientInput" type="text" placeholder="Contoh: Keluarga Budi" autocomplete="off" />
+<label for="recipientLink">Tautan undangan untuk tamu ini</label>
+<input id="recipientLink" type="text" readonly spellcheck="false" />
+<div class="row"><button type="button" id="copyRecipientLink" class="primary" disabled>Salin tautan tamu</button><a id="previewRecipientLink" target="_blank" rel="noopener" hidden>Lihat cover tamu ↗</a></div>
+<p id="recipientStatus" role="status" aria-live="polite">Buat nama yang berbeda untuk setiap tautan, tanpa perlu publikasi ulang.</p>
+</details>
+<form id="editorForm"></form><div class="githubPanel">
 <b>Publikasi ke GitHub Pages</b>
 <p>Repositori: <code>jeforoh03-cell/noelprint</code> • Folder <code>undangan-jesslyn</code></p>
 <p>Gunakan fine-grained Personal Access Token GitHub dengan akses <b>Contents: Read and write</b> hanya ke repositori ini. Token hanya dipakai sementara, tidak disimpan di browser maupun di file undangan.</p>
@@ -1303,7 +1322,22 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
 const $=id=>document.getElementById(id), modal=$('inviteEditor'), form=$('editorForm');
 const decode=v=>{const t=document.createElement('textarea');t.innerHTML=v||'';return t.value};
 let draft, dirty=false, busy=false;
-const groups=[['Data anak & keluarga',[['namaAnak','Nama lengkap anak'],['namaAnakShort','Nama panggilan anak'],['orangtua','Nama orang tua'],['panggilan','Sapaan tamu default'],['quote','Kutipan'],['penutupNama','Nama keluarga'],['tahunTeks','Tahun footer']]],['Waktu & lokasi',[['tanggalISO','Mulai acara','datetime-local'],['tanggalSelesaiISO','Selesai acara (opsional)','datetime-local'],['namaTempat','Nama tempat'],['alamat','Alamat lengkap'],['maps','Tautan Google Maps','url'],['catatanWaktu','Catatan waktu'],['batasKonfirmasi','Batas konfirmasi'],['waNomor','Nomor WhatsApp (awali 62)'],['linkUndangan','URL undangan online (opsional)','url']]],['Informasi Baptisan (isi nanti)',[['tempatBaptisan','Tempat Baptisan'],['namaGereja','Nama Gereja'],['jamIbadahGereja','Jam Ibadah Gereja'],['alamatGereja','Alamat Gereja','textarea'],['mapsGereja','Tautan Google Maps Gereja','url']]],['Teks undangan',[['pembukaSalam','Salam pembuka'],['pembukaTeks','Isi pembuka','textarea'],['penutupTeks','Isi penutup','textarea']]]];
+const groups=[['Data anak & keluarga',[['namaAnak','Nama lengkap anak'],['namaAnakShort','Nama panggilan anak'],['orangtua','Nama orang tua'],['panggilan','Sapaan sebelum nama tamu'],['namaTamu','Nama tamu / keluarga default (opsional)'],['quote','Kutipan'],['penutupNama','Nama keluarga'],['tahunTeks','Tahun footer']]],['Waktu & lokasi',[['tanggalISO','Mulai acara','datetime-local'],['tanggalSelesaiISO','Selesai acara (opsional)','datetime-local'],['namaTempat','Nama tempat'],['alamat','Alamat lengkap'],['maps','Tautan Google Maps','url'],['catatanWaktu','Catatan waktu'],['batasKonfirmasi','Batas konfirmasi'],['waNomor','Nomor WhatsApp (awali 62)'],['linkUndangan','URL undangan online (opsional)','url']]],['Informasi Baptisan (isi nanti)',[['tempatBaptisan','Tempat Baptisan'],['namaGereja','Nama Gereja'],['jamIbadahGereja','Jam Ibadah Gereja'],['alamatGereja','Alamat Gereja','textarea'],['mapsGereja','Tautan Google Maps Gereja','url']]],['Teks undangan',[['pembukaSalam','Salam pembuka'],['pembukaTeks','Isi pembuka','textarea'],['penutupTeks','Isi penutup','textarea']]]];
+function updateRecipientLink(){
+ const name=$('recipientInput').value.trim();
+ const url=new URL(DATA.linkUndangan||'./',location.href);url.hash='';url.searchParams.delete('to');
+ if(name)url.searchParams.set('to',name);
+ $('recipientLink').value=name?url.href:'';
+ $('copyRecipientLink').disabled=!name;
+ const preview=$('previewRecipientLink');preview.hidden=!name;if(name)preview.href=url.href;else preview.removeAttribute('href');
+ $('recipientStatus').textContent=name?'Nama di cover: '+name:'Buat nama yang berbeda untuk setiap tautan, tanpa perlu publikasi ulang.';
+}
+$('recipientInput').oninput=updateRecipientLink;
+$('copyRecipientLink').onclick=async()=>{
+ const link=$('recipientLink');if(!link.value)return;
+ try{await navigator.clipboard.writeText(link.value);$('recipientStatus').textContent='Tautan tamu berhasil disalin. Siap dibagikan.';}
+ catch(e){link.focus();link.select();$('recipientStatus').textContent='Tekan dan tahan tautan atau gunakan Ctrl+C untuk menyalinnya.';}
+};
 function el(tag,text,parent){const x=document.createElement(tag);if(text!==undefined)x.textContent=text;if(parent)parent.append(x);return x}
 function section(title,open=false){const x=el('details',undefined,form);x.open=open;el('summary',title,x);return x}
 function field(parent,label,value,change,type='text'){const l=el('label',label,parent),x=el(type==='textarea'?'textarea':'input',undefined,l);if(type!=='textarea')x.type=type;x.value=value||'';x.oninput=()=>{change(x.value);dirty=true};return x}
@@ -1319,7 +1353,7 @@ draft.galeri.forEach((g,i)=>{const card=el('div',undefined,gallery);card.classNa
 const notes=section('Catatan tamu');draft.catatan.forEach((v,i)=>field(notes,'Catatan '+(i+1),decode(v.replace(/<[^>]*>/g,'')),s=>draft.catatan[i]=escapeText(s),'textarea'));
 const options=section('Tampilan');[['tampilGaleri','Tampilkan galeri'],['musikAktif','Aktifkan musik']].forEach(([k,t])=>{const l=el('label',undefined,options),c=el('input',undefined,l);c.type='checkbox';c.checked=draft[k];l.append(' '+t);c.onchange=()=>{draft[k]=c.checked;dirty=true}});
 }
-$('editLaunch').onclick=()=>{draft=JSON.parse(JSON.stringify(DATA));draft.zone=DATA.tanggalISO.slice(-6);draw();showStatus('Unduh file setelah selesai mengedit.');modal.showModal()};
+$('editLaunch').onclick=()=>{draft=JSON.parse(JSON.stringify(DATA));draft.zone=DATA.tanggalISO.slice(-6);draw();updateRecipientLink();showStatus('Unduh file setelah selesai mengedit.');modal.showModal()};
 $('closeEditor').onclick=()=>modal.close();form.onsubmit=e=>e.preventDefault();
 function apply(){if(busy)throw Error('Tunggu pemrosesan foto selesai.');if(!form.reportValidity())throw Error('Periksa isian yang ditandai.');const copy=JSON.parse(JSON.stringify(draft));for(const k of ['tanggalISO','tanggalSelesaiISO'])copy[k]=copy[k] ? copy[k].slice(0,16)+':00'+copy.zone : ''; const start=new Date(copy.tanggalISO),end=new Date(copy.tanggalSelesaiISO);if(!Number.isFinite(+start)||(copy.tanggalSelesaiISO && (!Number.isFinite(+end)||end<=start)))throw Error('Tanggal selesai harus setelah tanggal mulai.');if(!copy.namaAnak.trim())throw Error('Nama anak wajib diisi.');for(const k of ['maps','linkUndangan']){copy[k]=decode(copy[k]);if(copy[k]&&!/^https?:\/\//i.test(copy[k]))throw Error('Gunakan tautan https:// yang valid.');}copy.waNomor=copy.waNomor.replace(/\D/g,'').replace(/^0/,'62');const tz={'+07:00':'Asia/Jakarta','+08:00':'Asia/Makassar','+09:00':'Asia/Jayapura'}[copy.zone];copy.hariTanggal=start.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric',timeZone:tz});const time=d=>d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit',timeZone:tz});copy.jam=time(start)+(copy.tanggalSelesaiISO?' – '+time(end):'')+' '+({'+07:00':'WIB','+08:00':'WITA','+09:00':'WIT'}[copy.zone]);delete copy.zone;Object.assign(DATA,copy);refreshInvitation();wireGallery();dirty=true}
 $('applyEditor').onclick=()=>{try{apply();modal.close()}catch(e){showStatus(e.message)}};

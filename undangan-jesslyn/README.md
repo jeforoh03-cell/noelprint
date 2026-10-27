@@ -12,6 +12,10 @@ Lokasi: undangan-jesslyn/
 - Editor: https://jeforoh03-cell.github.io/noelprint/undangan-jesslyn/editor.html
 
 ## Mengubah undangan secara online
+Untuk membuat nama penerima pada cover, buka **Editor → Edit Undangan → Buat tautan nama tamu / keluarga**. Isi nama, lalu pilih **Salin tautan tamu**. Setiap tautan menampilkan nama penerima masing-masing tanpa publikasi ulang. Nama default untuk tautan tanpa penerima dapat diisi pada **Data anak & keluarga → Nama tamu / keluarga default (opsional)**.
+
+Contoh: `https://jeforoh03-cell.github.io/noelprint/undangan-jesslyn/?to=Keluarga%20Budi`
+
 1. Buka halaman Editor dan tekan "Edit Undangan".
 2. Ubah data undangan sesuai kebutuhan; tekan "Terapkan & Lihat" untuk pratinjau. Buka Edit Undangan lagi untuk publikasi.
 3. Buat fine-grained Personal Access Token melalui GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens.
@@ -26,3 +30,4 @@ Lokasi: undangan-jesslyn/
 - Undangan menggunakan tautan WhatsApp untuk konfirmasi kehadiran; tidak ada database RSVP.
 - Saat dibuka online, editor memuat data undangan terbaru dari halaman tamu.
 - GitHub Pages mungkin perlu diaktifkan pada Settings → Pages (Deploy from a branch → main → /(root)), jika situs belum tampil.
+

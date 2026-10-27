@@ -152,7 +152,8 @@ section{position:relative;padding:74px 0}
   background:rgba(255,255,255,.72);border:1px solid rgba(198,161,91,.35);
   box-shadow:var(--shadow-card);backdrop-filter:blur(6px)
 }
-.to-card .guest{font-size:23px;color:#5E4241;margin-top:2px}
+.to-card .guest-salutation{font:12px/1.6 var(--font-ui);color:var(--ink-soft);margin:6px 0}
+.to-card .guest{font-family:var(--font-display);font-size:clamp(24px,6.5vw,32px);font-weight:600;line-height:1.3;color:#5E4241;margin:6px 0 10px;overflow-wrap:anywhere}
 .btn{
   display:inline-flex;align-items:center;gap:10px;justify-content:center;
   padding:15px 34px;border-radius:999px;font-family:var(--font-ui);font-size:12.5px;
@@ -524,6 +525,12 @@ body.opened #gate{display:none!important}
         <img data-src="fotoUtama" alt="Foto Jesslyn Imanuella Faith Lintong" src="assets/f1.jpeg">
       </div>
       <h1 class="gate-name script" data-f="namaAnak">Jesslyn Imanuella Faith Lintong</h1>
+      <div class="to-card" aria-label="Penerima undangan">
+        <p class="to-label">Kepada Yth.</p>
+        <p class="guest-salutation" data-f="panggilan">Bapak / Ibu / Saudara/i</p>
+        <p class="guest" id="guestName">Nama Tamu / Keluarga</p>
+        <p class="lead" style="font-size:13px;margin:2px 0 0">Mohon maaf apabila ada kesalahan penulisan nama &amp; gelar</p>
+      </div>
       <div class="cover-verse" aria-label="Ayat Alkitab">
         <span class="verse-text">“Biarlah anak-anak itu datang kepada-Ku, jangan menghalang-halangi mereka.”</span>
         <span class="verse-ref">Markus 10:14</span>
@@ -537,12 +544,6 @@ body.opened #gate{display:none!important}
       </div>
       <p class="lead" style="margin:0" data-f="hariTanggal">Minggu, 1 November 2026</p>
       <p class="eyebrow" style="margin-top:4px" data-f="jam">13.00 WITA</p>
-
-      <div class="to-card">
-        <p class="to-label">Kepada</p>
-        <p class="guest script" id="guestName">Bapak / Ibu / Saudara/i</p>
-        <p class="lead" style="font-size:13.5px;margin:2px 0 0">Mohon maaf apabila ada kesalahan penulisan nama &amp; gelar</p>
-      </div>
 
       <div class="btn-row">
         <a class="btn" id="openBtn" href="#pembuka">
@@ -828,7 +829,8 @@ var DATA = {
 
   /* ---------- 1. DATA UTAMA ---------- */
   namaAnak:      "Jesslyn Imanuella Faith Lintong",        // nama lengkap anak
-  panggilan:     "Bapak / Ibu / Saudara/i",    // tulisan "Kepada" bila nama tamu tidak diisi lewat link
+  panggilan:     "Bapak / Ibu / Saudara/i",    // sapaan sebelum nama tamu
+  namaTamu:      "",                         // nama default; ?to=Nama%20Tamu mengutamakan nama pada tautan
   namaAnakShort: "Jesslyn",                     // nama pendek (untuk footer)
   usiaKe:        "1",                          // angka usia
   orangtua:      "Papa Denis Lintong &amp; Mama Sherina Mongilala",
@@ -938,10 +940,12 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
 
   /* --- 2. Nama tamu dari tautan (?to=Nama%20Tamu) --- */
   function guest(){
-    var m = location.search.match(/[?&]to=([^&]*)/);
-    var nm = ""; try{nm = m ? decodeURIComponent(m[1].replace(/\+/g," ")) : "";}catch(e){nm = "";}
-    if(!nm){ nm = (DATA.panggilan || "Bapak / Ibu / Saudara/i"); }
-    var g = q("#guestName"); if(g) g.textContent = nm;
+    var nm = (new URLSearchParams(location.search).get("to") || "").trim();
+    if(!nm){
+      var text = d.createElement("textarea"); text.innerHTML = DATA.namaTamu || "";
+      nm = text.value.trim();
+    }
+    var g = q("#guestName"); if(g) g.textContent = nm || "Nama Tamu / Keluarga";
   }
 
   /* --- 3. Susunan acara --- */
@@ -1122,7 +1126,11 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
   var shareFab = q("#shareFab");
   if(shareFab) shareFab.addEventListener("click", function(){
     if(location.protocol === "file:" && !DATA.linkUndangan){ alert("Bagikan file undangan-baptisan-tamu.html melalui WhatsApp, atau unggah ke hosting lalu isi URL undangan online di panel edit."); return; }
-    var link = DATA.linkUndangan || location.href.split("?")[0];
+    var url = new URL(DATA.linkUndangan || location.href, location.href);
+    url.hash = "";
+    var recipient = (new URLSearchParams(location.search).get("to") || "").trim();
+    if(recipient) url.searchParams.set("to", recipient);
+    var link = url.href;
     var teks = "Undangan Baptisan Kudus " + DATA.namaAnak + " \u2014 " +
                DATA.hariTanggal + ". Buka undangan digitalnya di sini: " + link;
     if(navigator.share){ navigator.share({ title:"Undangan Baptisan Kudus", text:teks, url:link }).catch(function(){}); }
