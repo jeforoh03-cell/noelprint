@@ -157,8 +157,13 @@ section{position:relative;padding:74px 0}
 .quick-guest-tools{margin-top:16px;padding-top:16px;border-top:1px solid rgba(198,161,91,.3);text-align:left;font:13px/1.6 var(--font-ui)}
 .quick-guest-tools[hidden],#quickGuestLaunch[hidden]{display:none!important}
 .quick-guest-tools label{display:block;font-weight:600;margin-bottom:7px;color:#5E4241}
-.quick-guest-tools input{display:block;width:100%;min-height:48px;padding:12px 13px;border:1px solid #d8bfb8;border-radius:12px;background:#fff;color:#5E4241;font:16px var(--font-ui)}
-.quick-guest-send{display:flex;justify-content:center;align-items:center;min-height:48px;margin-top:12px;padding:12px 16px;border-radius:12px;background:#23754a;color:#fff;font:600 14px/1.5 var(--font-ui);text-decoration:none}
+.quick-guest-tools input,.guest-message-preview{display:block;width:100%;min-height:48px;padding:12px 13px;border:1px solid #d8bfb8;border-radius:12px;background:#fff;color:#5E4241;font:16px/1.5 var(--font-ui)}
+.guest-message-preview{margin-top:12px;resize:vertical;font-size:14px}
+.guest-message-preview[hidden]{display:none!important}
+.quick-guest-send{display:flex;justify-content:center;align-items:center;width:100%;border:0;cursor:pointer;min-height:48px;margin-top:12px;padding:12px 16px;border-radius:12px;background:#23754a;color:#fff;font:600 14px/1.5 var(--font-ui);text-decoration:none}
+.quick-guest-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.quick-guest-actions a,.quick-guest-actions button{flex:1;padding:10px 8px;border:1px solid #d8bfb8;border-radius:10px;background:#fff8ef;color:#654b4b;text-align:center;font:600 12px/1.5 var(--font-ui);cursor:pointer}
+.quick-guest-actions [aria-disabled="true"]{opacity:.5}
 .quick-guest-send[aria-disabled="true"]{opacity:.5;cursor:default}
 .quick-guest-tools input:focus-visible,.quick-guest-send:focus-visible,#quickGuestLaunch:focus-visible{outline:3px solid #A87432;outline-offset:3px}
 .quick-guest-tools p{margin:9px 0 0;color:var(--ink-soft);font-size:12px}
@@ -546,8 +551,10 @@ body.opened #gate{display:none!important}
         <div id="quickGuestTools" class="quick-guest-tools" hidden>
           <label for="quickGuestName">Nama tamu / keluarga</label>
           <input id="quickGuestName" type="text" placeholder="Contoh: Keluarga Budi" autocomplete="off" enterkeyhint="send" aria-describedby="quickGuestStatus">
-          <a id="quickGuestSend" class="quick-guest-send" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">Kirim via WhatsApp</a>
-          <p id="quickGuestStatus" role="status" aria-live="polite">Ketik nama, lalu pilih kontak penerima di WhatsApp.</p>
+          <button id="quickGuestSend" class="quick-guest-send" type="button">Kirim via WhatsApp</button>
+          <div class="quick-guest-actions"><a id="quickGuestWeb" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">WhatsApp Web</a><button id="quickGuestCopy" type="button">Salin pesan</button></div>
+          <textarea id="quickGuestMessage" class="guest-message-preview" rows="7" readonly hidden aria-label="Pesan undangan untuk disalin"></textarea>
+          <p id="quickGuestStatus" role="status" aria-live="polite">Ketik nama penerima. Di HP, pilih WhatsApp pada menu berbagi; di komputer, gunakan WhatsApp Web.</p>
         </div>
       </div>
       <div class="cover-verse" aria-label="Ayat Alkitab">
@@ -973,12 +980,48 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
       invitationText(DATA.hariTanggal)+", pukul "+invitationText(DATA.jam)+"\n"+invitationText(DATA.namaTempat)+
       "\n\nSilakan buka undangan berikut:\n"+link+"\n\nKehadiran serta doa Bapak/Ibu/Saudara/i menjadi kebahagiaan bagi kami. Terima kasih.";
   }
+  function rememberGuestName(name){
+    try{var url=new URL(location.href);if(name)url.searchParams.set("to",name);else url.searchParams.delete("to");history.replaceState(history.state,"",url.href);}catch(e){}
+  }
+  function guestWhatsAppWebLink(name){
+    return "https://web.whatsapp.com/send?text="+encodeURIComponent(guestInvitationMessage(name,guestInvitationLink(name)));
+  }
+  async function sendGuestInvitation(name,status,preview){
+    name=String(name||"").trim();
+    if(!name){status.textContent="Isi nama tamu / keluarga terlebih dahulu.";return;}
+    var message=guestInvitationMessage(name,guestInvitationLink(name));
+    rememberGuestName(name);
+    var mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+    if(mobile&&typeof navigator.share==="function"){
+      status.textContent="Pilih WhatsApp, lalu kontak penerima pada menu berbagi.";
+      try{await navigator.share({text:message});status.textContent="Lanjutkan pengiriman di WhatsApp. Untuk penerima lain, ganti nama di atas.";}
+      catch(error){
+        if(preview){preview.value=message;preview.hidden=false;}
+        status.textContent=error.name==="AbortError"?"Menu berbagi ditutup. Anda dapat mencoba lagi atau memakai Salin pesan.":"Menu berbagi tidak tersedia. Pilih WhatsApp Web atau Salin pesan di bawah tombol kirim.";
+      }
+      return;
+    }
+    status.textContent=mobile?"Membuka WhatsApp. Jika tidak terbuka, gunakan Salin pesan.":"Membuka WhatsApp Web. Masuk ke akun Anda bila diminta, lalu pilih kontak penerima.";
+    location.assign(mobile?"https://api.whatsapp.com/send?text="+encodeURIComponent(message):guestWhatsAppWebLink(name));
+  }
+  async function copyGuestInvitation(name,status,preview){
+    name=String(name||"").trim();
+    if(!name){status.textContent="Isi nama tamu / keluarga terlebih dahulu.";return;}
+    var message=guestInvitationMessage(name,guestInvitationLink(name));
+    rememberGuestName(name);
+    if(preview){preview.value=message;preview.hidden=false;}
+    try{if(!navigator.clipboard||!navigator.clipboard.writeText)throw Error("clipboard unavailable");await navigator.clipboard.writeText(message);status.textContent="Pesan undangan disalin. Buka WhatsApp, pilih kontak, lalu tempel dan kirim.";}
+    catch(error){if(preview){preview.focus();preview.select();}status.textContent="Pesan sudah dipilih. Tekan Salin pada HP atau Ctrl+C, lalu tempel dan kirim di WhatsApp.";}
+  }
   window.guestInvitationLink=guestInvitationLink;
   window.guestInvitationMessage=guestInvitationMessage;
+  window.guestWhatsAppWebLink=guestWhatsAppWebLink;
+  window.sendGuestInvitation=sendGuestInvitation;
+  window.copyGuestInvitation=copyGuestInvitation;
   function guest(){
     var params=new URLSearchParams(location.search),queryName=(params.get("to")||"").trim();
     var nm=queryName||invitationText(DATA.namaTamu).trim();
-    var g=q("#guestName"),tools=q("#quickGuestTools"),input=q("#quickGuestName"),send=q("#quickGuestSend"),launch=q("#quickGuestLaunch"),status=q("#quickGuestStatus");
+    var g=q("#guestName"),tools=q("#quickGuestTools"),input=q("#quickGuestName"),send=q("#quickGuestSend"),launch=q("#quickGuestLaunch"),status=q("#quickGuestStatus"),web=q("#quickGuestWeb"),copy=q("#quickGuestCopy"),preview=q("#quickGuestMessage");
     if(g)g.textContent=nm||"Nama Tamu / Keluarga";
     if(!tools||!input||!send||!launch||!status)return;
     var editing=params.get("edit")==="1"||/\/editor\.html$/.test(location.pathname);
@@ -987,14 +1030,17 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
     function update(){
       var name=input.value.trim();
       if(editing&&g)g.textContent=name||"Nama Tamu / Keluarga";
-      send.setAttribute("aria-disabled",name?"false":"true");send.tabIndex=name?0:-1;
-      if(name){send.href="https://wa.me/?text="+encodeURIComponent(guestInvitationMessage(name,guestInvitationLink(name)));}
-      else send.removeAttribute("href");
-      status.textContent=name?"Siap dikirim untuk: "+name+". Pilih kontak penerima di WhatsApp.":"Ketik nama, lalu pilih kontak penerima di WhatsApp.";
+      if(web){web.setAttribute("aria-disabled",name?"false":"true");web.tabIndex=name?0:-1;if(name)web.href=guestWhatsAppWebLink(name);else web.removeAttribute("href");}
+      if(preview)preview.value=name?guestInvitationMessage(name,guestInvitationLink(name)):"";
+      status.textContent=name?"Siap untuk "+name+". Gunakan Kirim via WhatsApp atau Salin pesan.":"Ketik nama penerima. Di HP, pilih WhatsApp pada menu berbagi; di komputer, gunakan WhatsApp Web.";
+      return name;
     }
     input.oninput=function(){input.dataset.edited="1";update();};
+    input.onchange=function(){input.dataset.edited="1";rememberGuestName(update());};
     input.onkeydown=function(event){if(event.key==="Enter"){event.preventDefault();if(input.value.trim())send.click();}};
-    send.onclick=function(event){if(!input.value.trim()){event.preventDefault();input.focus();}};
+    send.onclick=function(event){event.preventDefault();input.dataset.edited="1";var name=update();if(!name){status.textContent="Isi nama tamu / keluarga terlebih dahulu.";input.focus();return;}return sendGuestInvitation(name,status,preview);};
+    if(copy)copy.onclick=function(){input.dataset.edited="1";var name=update();if(!name)input.focus();return copyGuestInvitation(name,status,preview);};
+    if(web)web.onclick=function(event){var name=update();if(!name){event.preventDefault();input.focus();}else rememberGuestName(name);};
     launch.onclick=function(){var url=new URL(location.href);url.searchParams.set("edit","1");history.replaceState(history.state,"",url.href);guest();input.focus();};
     update();
   }
