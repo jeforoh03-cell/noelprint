@@ -3,6 +3,15 @@
 <meta charset="UTF-8">
 <script id="invitation-entry">
 (function(){
+  // Keep older sender links working with the separate guest-name page.
+  var params=new URLSearchParams(location.search);
+  if(params.get("edit")==="1"&&!/\/editor\.html$/.test(location.pathname)){
+    var setup=new URL("tamu.html",location.href);
+    var name=(params.get("to")||"").trim();
+    if(name)setup.searchParams.set("to",name);
+    location.replace(setup.href);
+    return;
+  }
   // Every new visit begins at the cover, including older links to the content.
   try {
     if('scrollRestoration' in history) history.scrollRestoration='manual';
@@ -152,25 +161,19 @@ section{position:relative;padding:74px 0}
   background:rgba(255,255,255,.72);border:1px solid rgba(198,161,91,.35);
   box-shadow:var(--shadow-card);backdrop-filter:blur(6px)
 }
+.guest-setup{display:inline-block;margin:12px 0 0;padding:8px 16px;border:1px solid #D7B6C0;border-radius:999px;background:#F6E4E9;color:#874657;font:500 12px/1.5 var(--font-ui);text-decoration:none}
+.guest-setup:focus-visible{outline:3px solid #984360;outline-offset:3px}
+.guest-setup[hidden]{display:none}
 .to-card .guest-salutation{font:12px/1.6 var(--font-ui);color:var(--ink-soft);margin:6px 0}
 .to-card .guest{font-family:var(--font-display);font-size:clamp(24px,6.5vw,32px);font-weight:600;line-height:1.3;color:#5E4241;margin:6px 0 10px;overflow-wrap:anywhere}
-.quick-guest-tools{margin-top:16px;padding-top:16px;border-top:1px solid rgba(198,161,91,.3);text-align:left;font:13px/1.6 var(--font-ui)}
-.quick-guest-tools[hidden],#quickGuestLaunch[hidden]{display:none!important}
-.quick-guest-tools label{display:block;font-weight:600;margin-bottom:7px;color:#5E4241}
-.quick-guest-tools input,.guest-message-preview{display:block;width:100%;min-height:48px;padding:12px 13px;border:1px solid #d8bfb8;border-radius:12px;background:#fff;color:#5E4241;font:16px/1.5 var(--font-ui)}
-.guest-message-preview{margin-top:12px;resize:vertical;font-size:14px}
+.guest-message-preview{display:block;width:100%;min-height:48px;padding:12px 13px;border:1px solid #d8bfb8;border-radius:12px;background:#fff;color:#5E4241;font:14px/1.5 var(--font-ui);margin-top:12px;resize:vertical}
 .guest-message-preview[hidden]{display:none!important}
 .quick-guest-send{display:flex;justify-content:center;align-items:center;width:100%;border:0;cursor:pointer;min-height:48px;margin-top:12px;padding:12px 16px;border-radius:12px;background:#23754a;color:#fff;font:600 14px/1.5 var(--font-ui);text-decoration:none}
 .quick-guest-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
 .quick-guest-actions a,.quick-guest-actions button{flex:1;padding:10px 8px;border:1px solid #d8bfb8;border-radius:10px;background:#fff8ef;color:#654b4b;text-align:center;font:600 12px/1.5 var(--font-ui);cursor:pointer}
 .quick-guest-actions [aria-disabled="true"]{opacity:.5}
 .quick-guest-send[aria-disabled="true"]{opacity:.5;cursor:default}
-.quick-guest-tools input:focus-visible,.quick-guest-send:focus-visible,#quickGuestLaunch:focus-visible{outline:3px solid #A87432;outline-offset:3px}
-.quick-guest-tools p{margin:9px 0 0;color:var(--ink-soft);font-size:12px}
-#quickGuestLaunch{margin-top:14px;padding:9px 16px;border:1px solid #c6a15b;border-radius:999px;background:#fff8ef;color:#6d4546;font:600 13px var(--font-ui)}
-body.sending-invitation #gate .gate-inner{display:flex;flex-direction:column;padding-top:max(24px,env(safe-area-inset-top))}
-body.sending-invitation #gate .gate-inner>.eyebrow:first-child{order:-2}
-body.sending-invitation #gate .to-card{order:-1;width:100%;margin:0 auto 22px}
+.quick-guest-send:focus-visible{outline:3px solid #A87432;outline-offset:3px}
 .btn{
   display:inline-flex;align-items:center;gap:10px;justify-content:center;
   padding:15px 34px;border-radius:999px;font-family:var(--font-ui);font-size:12.5px;
@@ -544,18 +547,10 @@ body.opened #gate{display:none!important}
       <h1 class="gate-name script" data-f="namaAnak">Jesslyn Imanuella Faith Lintong</h1>
       <div class="to-card" aria-label="Penerima undangan">
         <p class="to-label">Kepada Yth.</p>
-        <p class="guest-salutation" data-f="panggilan">Bapak / Ibu / Saudara/i</p>
-        <p class="guest" id="guestName">Nama Tamu / Keluarga</p>
+        <p class="guest-salutation" data-f="panggilan" hidden>Bapak / Ibu / Saudara/i</p>
+        <p class="guest" id="guestName">Bapak / Ibu / Saudara/i</p>
         <p class="lead" style="font-size:13px;margin:2px 0 0">Mohon maaf apabila ada kesalahan penulisan nama &amp; gelar</p>
-        <button id="quickGuestLaunch" type="button" hidden>Edit Nama &amp; Kirim</button>
-        <div id="quickGuestTools" class="quick-guest-tools" hidden>
-          <label for="quickGuestName">Nama tamu / keluarga</label>
-          <input id="quickGuestName" type="text" placeholder="Contoh: Keluarga Budi" autocomplete="off" enterkeyhint="send" aria-describedby="quickGuestStatus">
-          <button id="quickGuestSend" class="quick-guest-send" type="button">Kirim via WhatsApp</button>
-          <div class="quick-guest-actions"><a id="quickGuestWeb" target="_blank" rel="noopener noreferrer" aria-disabled="true" tabindex="-1">WhatsApp Web</a><button id="quickGuestCopy" type="button">Salin pesan</button></div>
-          <textarea id="quickGuestMessage" class="guest-message-preview" rows="7" readonly hidden aria-label="Pesan undangan untuk disalin"></textarea>
-          <p id="quickGuestStatus" role="status" aria-live="polite">Ketik nama penerima. Di HP, pilih WhatsApp pada menu berbagi; di komputer, gunakan WhatsApp Web.</p>
-        </div>
+        <a class="guest-setup" id="guestSetupLink" href="tamu.html">Isi nama tamu / keluarga</a>
       </div>
       <div class="cover-verse" aria-label="Ayat Alkitab">
         <span class="verse-text">“Biarlah anak-anak itu datang kepada-Ku, jangan menghalang-halangi mereka.”</span>
@@ -1019,30 +1014,12 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
   window.sendGuestInvitation=sendGuestInvitation;
   window.copyGuestInvitation=copyGuestInvitation;
   function guest(){
-    var params=new URLSearchParams(location.search),queryName=(params.get("to")||"").trim();
-    var nm=queryName||invitationText(DATA.namaTamu).trim();
-    var g=q("#guestName"),tools=q("#quickGuestTools"),input=q("#quickGuestName"),send=q("#quickGuestSend"),launch=q("#quickGuestLaunch"),status=q("#quickGuestStatus"),web=q("#quickGuestWeb"),copy=q("#quickGuestCopy"),preview=q("#quickGuestMessage");
-    if(g)g.textContent=nm||"Nama Tamu / Keluarga";
-    if(!tools||!input||!send||!launch||!status)return;
-    var editing=params.get("edit")==="1"||/\/editor\.html$/.test(location.pathname);
-    tools.hidden=!editing;launch.hidden=editing||!!queryName;d.body.classList.toggle("sending-invitation",editing);
-    if(!input.dataset.edited)input.value=nm;
-    function update(){
-      var name=input.value.trim();
-      if(editing&&g)g.textContent=name||"Nama Tamu / Keluarga";
-      if(web){web.setAttribute("aria-disabled",name?"false":"true");web.tabIndex=name?0:-1;if(name)web.href=guestWhatsAppWebLink(name);else web.removeAttribute("href");}
-      if(preview)preview.value=name?guestInvitationMessage(name,guestInvitationLink(name)):"";
-      status.textContent=name?"Siap untuk "+name+". Gunakan Kirim via WhatsApp atau Salin pesan.":"Ketik nama penerima. Di HP, pilih WhatsApp pada menu berbagi; di komputer, gunakan WhatsApp Web.";
-      return name;
-    }
-    input.oninput=function(){input.dataset.edited="1";update();};
-    input.onchange=function(){input.dataset.edited="1";rememberGuestName(update());};
-    input.onkeydown=function(event){if(event.key==="Enter"){event.preventDefault();if(input.value.trim())send.click();}};
-    send.onclick=function(event){event.preventDefault();input.dataset.edited="1";var name=update();if(!name){status.textContent="Isi nama tamu / keluarga terlebih dahulu.";input.focus();return;}return sendGuestInvitation(name,status,preview);};
-    if(copy)copy.onclick=function(){input.dataset.edited="1";var name=update();if(!name)input.focus();return copyGuestInvitation(name,status,preview);};
-    if(web)web.onclick=function(event){var name=update();if(!name){event.preventDefault();input.focus();}else rememberGuestName(name);};
-    launch.onclick=function(){var url=new URL(location.href);url.searchParams.set("edit","1");history.replaceState(history.state,"",url.href);guest();input.focus();};
-    update();
+    var queryName=(new URLSearchParams(location.search).get("to")||"").trim();
+    var name=queryName||invitationText(DATA.namaTamu).trim();
+    var guestName=q("#guestName"),setup=q("#guestSetupLink"),salutation=q(".guest-salutation");
+    if(guestName)guestName.textContent=name||invitationText(DATA.panggilan)||"Bapak / Ibu / Saudara/i";
+    if(salutation)salutation.hidden=!name;
+    if(setup)setup.hidden=!!queryName;
   }
 
   /* --- 3. Susunan acara --- */
@@ -1224,8 +1201,6 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
   if(shareFab) shareFab.addEventListener("click", function(){
     if(location.protocol === "file:" && !DATA.linkUndangan){ alert("Bagikan file undangan-baptisan-tamu.html melalui WhatsApp, atau unggah ke hosting lalu isi URL undangan online di panel edit."); return; }
     var recipient = (new URLSearchParams(location.search).get("to") || "").trim();
-    var tools=q("#quickGuestTools"),input=q("#quickGuestName");
-    if(tools&&!tools.hidden&&input)recipient=input.value.trim();
     var link = guestInvitationLink(recipient);
     var teks = guestInvitationMessage(recipient,link);
     if(navigator.share){ navigator.share({ title:"Undangan Baptisan Kudus", text:teks, url:link }).catch(function(){}); }
@@ -1383,3 +1358,4 @@ guestGallery();
 
 
 <a href="blob:null/129e01a6-fb5b-43e9-aa1f-2ed578e37770" download="undangan-baptisan-tamu.html" style="display: none;"></a></body></html>
+

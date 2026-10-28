@@ -5,16 +5,22 @@ Lokasi: undangan-jesslyn/
 
 ## Mode
 - index.html — halaman tamu tanpa fitur pengeditan.
+- tamu.html — halaman khusus untuk mengisi nama tamu / keluarga, membuat tautan, menyalin tautan, dan melihat cover penerima.
 - editor.html — halaman editor lengkap dengan pengubahan konten, foto, galeri, rundown acara, dan tombol "Publikasikan ke GitHub".
 
 ## Alamat
 - Tamu: https://jeforoh03-cell.github.io/noelprint/undangan-jesslyn/
+- Isi nama tamu: https://jeforoh03-cell.github.io/noelprint/undangan-jesslyn/tamu.html
 - Editor: https://jeforoh03-cell.github.io/noelprint/undangan-jesslyn/editor.html
 
 ## Mengubah undangan secara online
-Cara cepat: buka `https://jeforoh03-cell.github.io/noelprint/undangan-jesslyn/?edit=1`, ketik **Nama tamu / keluarga** langsung di cover, lalu tekan **Kirim via WhatsApp**. Di HP yang mendukung menu berbagi, pilih WhatsApp dan kontak penerima. Di komputer tombol membuka WhatsApp Web; masuk bila diminta. Pesan undangan dan tautan bernama penerima disiapkan dari isian terbaru saat tombol ditekan, termasuk setelah autofill. Nama disimpan pada tautan halaman pengirim supaya tetap tampil setelah halaman dimuat ulang.
+Cara cepat: buka halaman tamu tanpa parameter penerima, lalu pilih **Isi nama tamu / keluarga** di cover. Halaman `tamu.html` memakai alur yang sama dengan undangan ulang tahun Jesslyn:
 
-Tersedia juga **WhatsApp Web** dan **Salin pesan**. Jika WhatsApp tidak terbuka, pilih **Salin pesan**, buka chat WhatsApp, lalu tempel dan kirim. Jika clipboard tidak tersedia, pesan ditampilkan dan dipilih untuk disalin manual. Tautan yang dibagikan menampilkan cover tamu tanpa kolom pengiriman. Halaman utama juga menyediakan tombol **Edit Nama & Kirim**. Situs tidak dapat mengirim pesan tanpa langkah akhir di WhatsApp milik pengirim.
+1. Isi nama orang atau keluarga, misalnya **Keluarga Budi**.
+2. Tekan **Buat Tautan Undangan**.
+3. Pilih **Salin Tautan** untuk dibagikan, atau **Lihat Undangan** untuk memeriksa cover.
+
+Nama disimpan dalam parameter `?to=` pada tautan, sehingga setiap tamu mendapat nama masing-masing tanpa publikasi ulang. Tombol pengisian nama disembunyikan pada tautan yang sudah memiliki penerima. Tautan lama `?edit=1` diarahkan ke halaman pengisian nama yang baru. Undangan tetap dimulai dari cover saat dibuka.
 
 Untuk membuat nama penerima pada cover, buka **Editor → Edit Undangan → Buat tautan nama tamu / keluarga**. Isi nama, lalu pilih **Salin tautan tamu**. Setiap tautan menampilkan nama penerima masing-masing tanpa publikasi ulang. Nama default untuk tautan tanpa penerima dapat diisi pada **Data anak & keluarga → Nama tamu / keluarga default (opsional)**.
 
@@ -34,4 +40,5 @@ Contoh: `https://jeforoh03-cell.github.io/noelprint/undangan-jesslyn/?to=Keluarg
 - Undangan menggunakan tautan WhatsApp untuk konfirmasi kehadiran; tidak ada database RSVP.
 - Saat dibuka online, editor memuat data undangan terbaru dari halaman tamu.
 - GitHub Pages mungkin perlu diaktifkan pada Settings → Pages (Deploy from a branch → main → /(root)), jika situs belum tampil.
+
 
