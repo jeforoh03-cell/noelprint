@@ -417,6 +417,7 @@ dialog[open]{display:block;position:fixed;inset:5vh auto auto 50%;transform:tran
 .guest-setup:focus-visible{outline:3px solid #984360;outline-offset:3px}
 .guest-setup[hidden]{display:none}
 </style>
+<link id="guestbookStyle" rel="stylesheet" href="assets/guestbook.css?v=20261030-1">
 </head>
 <body class="locked">
 
@@ -628,17 +629,17 @@ dialog[open]{display:block;position:fixed;inset:5vh auto auto 50%;transform:tran
   <!-- B5. UCAPAN & DOA -->
   <section id="ucapan" class="section-soft">
     <div class="wrap">
-      <div class="center rv" style="transition-delay: 0ms;">
+      <div class="center rv" style="transition-delay: 90ms;">
         <p class="eyebrow">Ucapan &amp; doa</p>
         <h2 class="title">Kirimkan <em>Doa Terbaik</em></h2>
-        <p class="lead">Tuliskan doa, harapan, atau ucapan hangat untuk ananda tercinta.</p>
+        <p class="lead">Sampaikan ucapan dan doa untuk ulang tahun pertama Jesslyn.</p>
       </div>
 
       
 
-      <div class="card rv" style="transition-delay: 90ms;">
-        <p class="eyebrow">Formulir konfirmasi kehadiran (RSVP)</p>
-        <label class="field"><span>Nama</span><input id="fNama" type="text" placeholder="Nama Bapak/Ibu/Saudara/i" autocomplete="name"></label>
+      <form class="card rv gb-form" id="guestbookForm" data-api="https://ucapan-baptisan-jesslyn.livelyshrew35.chatgpt.site/api/guestbook-ultah" style="transition-delay:180ms">
+        <p class="eyebrow">Tinggalkan ucapan &amp; konfirmasi kehadiran</p>
+        <label class="field"><span>Nama</span><input id="fNama" type="text" placeholder="Nama Bapak/Ibu/Saudara/i" autocomplete="name" maxlength="160" required></label>
         <label class="field"><span>Konfirmasi kehadiran</span>
           <select id="fHadir">
             <option value="Hadir">Hadir</option>
@@ -647,14 +648,22 @@ dialog[open]{display:block;position:fixed;inset:5vh auto auto 50%;transform:tran
             <option value="Masih belum pasti">Masih belum pasti</option>
           </select>
         </label>
-        <label class="field"><span>Ucapan &amp; doa</span><textarea id="fUcapan" placeholder="Tuliskan ucapan terbaik Anda..."></textarea></label>
-        <div class="btn-row" style="margin-top:6px">
-          <button class="btn" id="sendWa">
-            <svg width="17" height="17"><use href="#i-wa"></use></svg> Kirim via WhatsApp
-          </button>
-          
+        <label class="field"><span>Ucapan &amp; doa</span><textarea id="fUcapan" placeholder="Tuliskan ucapan terbaik Anda..." maxlength="1000" rows="4" required></textarea></label>
+        <label class="gb-honey" aria-hidden="true">Biarkan kosong<input id="wishCompany" type="text" tabindex="-1" autocomplete="off"></label>
+        <div class="gb-composer-tools"><button type="button" class="gb-emoji-toggle" id="wishEmojiToggle" aria-expanded="false" aria-controls="wishEmojiPicker">☺ Pilih emoji</button><span id="wishChars" class="gb-char-count">0 / 1.000</span></div>
+        <div id="wishEmojiPicker" class="gb-emoji-picker" aria-label="Pilihan emoji" hidden>
+          <button type="button" data-emoji="💖" aria-label="Tambahkan emoji cinta">💖</button><button type="button" data-emoji="🙏" aria-label="Tambahkan emoji doa">🙏</button><button type="button" data-emoji="🎉" aria-label="Tambahkan emoji perayaan">🎉</button><button type="button" data-emoji="✨" aria-label="Tambahkan emoji berkilau">✨</button><button type="button" data-emoji="🌸" aria-label="Tambahkan emoji bunga">🌸</button><button type="button" data-emoji="🎂" aria-label="Tambahkan emoji kue ulang tahun">🎂</button>
         </div>
-        <p class="lead" style="font-size:13.5px;margin:14px 0 0;text-align:center">Ucapan yang dikirim melalui WhatsApp akan tercatat oleh keluarga ananda. <br>Mohon konfirmasi kehadiran melalui WhatsApp keluarga.</p>
+        <button class="btn gb-submit" id="sendWish" type="submit">Kirim Ucapan</button>
+        <p class="gb-help">Ucapan dan status kehadiran akan tampil di undangan dan dapat dibaca oleh tamu lain.</p>
+        <p class="gb-status" id="wishStatus" role="status" aria-live="polite"></p>
+        <button class="btn ghost gb-wa" id="sendWa" type="button"><svg width="17" height="17"><use href="#i-wa"></use></svg> Konfirmasi via WhatsApp</button>
+      </form>
+      <div class="gb-board" aria-label="Buku ucapan tamu">
+        <div class="gb-board-head"><div><h3>Ucapan &amp; doa dari tamu</h3><span id="wishCount">Memuat ucapan…</span></div><button type="button" class="gb-refresh" id="wishRefresh">Muat ulang</button></div>
+        <div id="wishList" aria-label="Daftar ucapan" aria-busy="true"><p class="gb-empty">Memuat ucapan dan doa…</p></div>
+        <p class="gb-status" id="wishFeedStatus" role="status" aria-live="polite"></p>
+        <button type="button" class="gb-more" id="wishMore" hidden>Lihat ucapan lainnya</button>
       </div>
     </div>
   </section>
@@ -877,6 +886,7 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
 
   /* --- 5. Dinding ucapan --- */
   function ucapan(){
+    if(d.getElementById("guestbookForm")) return;
     var box = q("#wishList"); if(!box) return;
     var html = '<p class="eyebrow">Ucapan yang telah masuk</p>';
     if(!DATA.ucapan.length) html += '<p class="lead">Jadilah yang pertama mengirimkan doa.</p>';
@@ -1006,16 +1016,7 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
     if(!no){ alert("Nomor WhatsApp keluarga belum diisi. Buka bagian DATA lalu isi waNomor."); return; }
     window.open("https://wa.me/"+no+"?text="+encodeURIComponent(teks), "_blank");
   });
-  var sendLocal = q("#sendLocal");
-  if(sendLocal) sendLocal.addEventListener("click", function(){
-    var u = dataUcapan();
-    DATA.ucapan.unshift({ nama: escapeText(u.nama), teks: escapeText(u.ucapan || (u.hadir + " — terima kasih atas undangannya.")) });
-    ucapan();
-    q("#fUcapan").value = "";
-    sendLocal.textContent = "Terima kasih \u2764";
-    setTimeout(function(){ sendLocal.textContent = "Tampilkan Ucapan di Perangkat Ini"; }, 2200);
-    var wl = q("#wishList"); if(wl && wl.scrollIntoView) wl.scrollIntoView({ behavior:"smooth", block:"center" });
-  });
+
 
   /* --- 13. Bagikan --- */
   var shareFab = q("#shareFab");
@@ -1142,4 +1143,5 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
 
 
 
+<script id="guestbookScript" src="assets/guestbook.js?v=20261030-1" defer></script>
 </body></html>

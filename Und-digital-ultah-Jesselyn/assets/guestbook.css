@@ -1,0 +1,53 @@
+#ucapan .gb-form{margin-top:28px;text-align:left}
+#ucapan .gb-form .eyebrow{margin:0 0 18px}
+#ucapan .gb-form input,#ucapan .gb-form textarea,#ucapan .gb-reply-form input,#ucapan .gb-reply-form textarea{font-size:16px}
+#ucapan .gb-form textarea{min-height:120px;resize:vertical}
+#ucapan .gb-help{font:12px/1.8 var(--font-ui);color:var(--ink-soft);margin:12px 0 0;text-align:center}
+#ucapan .gb-status{font:13px/1.7 var(--font-ui);min-height:1.7em;color:#874657;margin:12px 0 0;overflow-wrap:anywhere}
+#ucapan .gb-status[data-error="true"]{color:#a03940}
+#ucapan .gb-composer-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:10px 0 18px}
+#ucapan .gb-emoji-toggle{border:1px solid #d9c0c7;background:#fffaf8;color:#874657;border-radius:12px;padding:10px 14px;cursor:pointer;font:500 13px/1.5 var(--font-ui)}
+#ucapan .gb-emoji-picker{display:flex;flex-wrap:wrap;gap:8px;padding:12px;border:1px solid #ecd8dd;border-radius:14px;background:#fffaf8;margin-bottom:18px}
+#ucapan .gb-emoji-picker button{font-size:26px;line-height:1;min-width:42px;min-height:42px;border:0;border-radius:10px;background:#f8e9ed;cursor:pointer}
+#ucapan .gb-char-count{font:11px/1.5 var(--font-ui);color:var(--ink-soft)}
+#ucapan .gb-submit{width:100%;border:0;cursor:pointer;background:linear-gradient(120deg,#a65c78,#87465d);color:#fff;box-shadow:0 10px 24px -14px #87465d;letter-spacing:.12em}
+#ucapan .gb-wa{width:100%;margin-top:10px;letter-spacing:.06em;padding:12px 18px;font-size:11px;cursor:pointer}
+#ucapan button:disabled{opacity:.6;cursor:wait}
+#ucapan button:focus-visible,#ucapan input:focus-visible,#ucapan textarea:focus-visible{outline:3px solid #b58566;outline-offset:3px}
+#ucapan .gb-honey{position:absolute!important;left:-10000px;width:1px;height:1px;overflow:hidden}
+#ucapan .gb-board{margin-top:34px;padding:clamp(20px,5vw,30px);background:rgba(255,250,248,.86);border:1px solid #e7d4cb;border-radius:22px;box-shadow:var(--shadow-card)}
+#ucapan .gb-board-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
+#ucapan .gb-board-head h3{font:600 clamp(23px,5.5vw,29px)/1.3 var(--font-display);color:#703e50;margin:0 0 6px}
+#ucapan #wishCount{font:11px/1.5 var(--font-ui);color:var(--ink-soft)}
+#ucapan .gb-refresh{background:transparent;border:1px solid #ddc5cd;border-radius:999px;color:#874657;padding:8px 12px;font:500 11px/1.5 var(--font-ui);cursor:pointer;white-space:nowrap}
+#ucapan .gb-empty{font:14px/1.9 var(--font-ui);color:var(--ink-soft);padding:18px 0;margin:0;text-align:center}
+#ucapan .gb-entry{padding:24px 0;border-bottom:1px solid #eadbd7;text-align:left;min-width:0}
+#ucapan .gb-entry:last-child{border-bottom:0;padding-bottom:4px}
+#ucapan .gb-entry-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+#ucapan .gb-name{font:600 15px/1.6 var(--font-ui);color:#654049;overflow-wrap:anywhere;margin:0}
+#ucapan .gb-badge{flex:none;border-radius:999px;padding:5px 10px;font:500 10px/1.5 var(--font-ui);background:#f0e6d3;color:#7a6542;max-width:47%;text-align:center}
+#ucapan .gb-badge[data-state="hadir"]{background:#e4efe1;color:#49734d}
+#ucapan .gb-badge[data-state="tidak"]{background:#f7e1e0;color:#a45054}
+#ucapan .gb-message{font:14px/1.9 var(--font-ui);color:#785960;white-space:pre-wrap;overflow-wrap:anywhere;margin:13px 0 18px}
+#ucapan .gb-entry-foot{display:flex;justify-content:space-between;align-items:center;gap:14px}
+#ucapan .gb-time{font:10px/1.8 var(--font-ui);color:#9a7d80}
+#ucapan .gb-time span{display:block}
+#ucapan .gb-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:flex-end}
+#ucapan .gb-text-button{display:inline-flex;align-items:center;gap:5px;border:0;padding:6px 0;background:transparent;color:#875b67;cursor:pointer;font:500 12px/1.4 var(--font-ui)}
+#ucapan .gb-like[aria-pressed="true"]{color:#b84d73}
+#ucapan .gb-heart{font-family:Arial,sans-serif;font-size:23px;line-height:1}
+#ucapan .gb-delete{font-size:10px;color:#a58b8d}
+#ucapan .gb-reply-form{display:grid;gap:10px;margin-top:18px;padding:16px;border-radius:14px;background:#f6e9eb}
+#ucapan .gb-reply-form label{font:500 12px/1.6 var(--font-ui);color:#78525e}
+#ucapan .gb-reply-form input,#ucapan .gb-reply-form textarea{display:block;width:100%;padding:10px 12px;border:1px solid #dac3c9;border-radius:10px;background:#fffcfa;color:#654049;font-family:var(--font-ui);margin-top:5px}
+#ucapan .gb-reply-form textarea{resize:vertical;min-height:88px}
+#ucapan .gb-reply-send{border:0;border-radius:999px;padding:11px 18px;background:#984360;color:white;font:500 12px/1.5 var(--font-ui);cursor:pointer;justify-self:start}
+#ucapan .gb-replies{margin-top:16px;border-left:2px solid #e6ced7;padding-left:16px}
+#ucapan .gb-entry.gb-is-reply{padding:16px 0}
+#ucapan .gb-is-reply .gb-name{font-size:13px}
+#ucapan .gb-is-reply .gb-message{font-size:13px;margin:8px 0 12px}
+#ucapan .gb-is-reply .gb-badge{display:none}
+#ucapan .gb-replies-note{font:10px/1.6 var(--font-ui);color:#9a7d80;margin:10px 0 0}
+#ucapan .gb-more{display:block;margin:22px auto 0;padding:12px 20px;border:1px solid #d8b7c4;background:#fffaf8;border-radius:999px;color:#874657;font:500 12px/1.5 var(--font-ui);cursor:pointer}
+#ucapan [hidden]{display:none!important}
+@media(max-width:380px){#ucapan .gb-actions{gap:10px}#ucapan .gb-badge{font-size:9px;padding:5px 8px}#ucapan .gb-board{padding:18px}#ucapan .gb-entry-foot{gap:8px}}
