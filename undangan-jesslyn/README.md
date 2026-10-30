@@ -37,8 +37,12 @@ Contoh: `https://jeforoh03-cell.github.io/noelprint/undangan-jesslyn/?to=Keluarg
 - Website ini dihosting statis melalui GitHub Pages. Editor memublikasikan perubahan halaman tamu melalui API GitHub.
 - Editor publik hanya dapat mengirim pembaruan bila memiliki token dengan izin tulis; halaman editor tidak menggunakan password statis di dalam kode.
 - Token tidak disimpan di HTML undangan atau penyimpanan lokal.
-- Undangan menggunakan tautan WhatsApp untuk konfirmasi kehadiran; tidak ada database RSVP.
+- Tombol **Kirim Ucapan** menyimpan ucapan dan status kehadiran ke buku ucapan bersama. Ucapan dapat dibaca seluruh tamu, dilengkapi waktu WITA, balasan, emoji, dan tanda suka. **Konfirmasi via WhatsApp** tetap tersedia sebagai pilihan tambahan.
+- Ucapan dimuat dari layanan buku ucapan, bukan disisipkan ke file HTML. Publikasi ulang editor tidak menghapus ucapan. Penyimpanan sesi pada perangkat hanya dipakai untuk tanda suka dan penghapusan ucapan milik pengirim sendiri.
+- Layanan buku ucapan: `https://ucapan-baptisan-jesslyn.livelyshrew35.chatgpt.site`. Project Sites: `appgprj_6ae3e5220ff88191a98c14af756410db`. Sumber layanan tersimpan pada repositori Sites yang terhubung.
+- Kiriman kosong/terlalu panjang ditolak. Pengiriman ulang setelah gangguan koneksi tidak menggandakan ucapan. Ucapan yang gagal dikirim tetap berada di formulir agar dapat dicoba lagi.
 - Saat dibuka online, editor memuat data undangan terbaru dari halaman tamu.
 - GitHub Pages mungkin perlu diaktifkan pada Settings → Pages (Deploy from a branch → main → /(root)), jika situs belum tampil.
+
 
 

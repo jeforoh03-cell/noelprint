@@ -519,6 +519,7 @@ body.opened #gate{display:none!important}
 .guest-setup:focus-visible{outline:3px solid #984360;outline-offset:3px}
 .guest-setup[hidden]{display:none}
 </style>
+<link id="guestbookStyle" rel="stylesheet" href="assets/guestbook.css?v=20261030-1">
 </head>
 <body class="locked">
 
@@ -767,9 +768,9 @@ body.opened #gate{display:none!important}
 
       
 
-      <div class="card rv" style="transition-delay: 180ms;">
-        <p class="eyebrow">Formulir konfirmasi kehadiran (RSVP)</p>
-        <label class="field"><span>Nama</span><input id="fNama" type="text" placeholder="Nama Bapak/Ibu/Saudara/i" autocomplete="name"></label>
+      <form class="card rv gb-form" id="guestbookForm" data-api="https://ucapan-baptisan-jesslyn.livelyshrew35.chatgpt.site/api/guestbook" style="transition-delay:180ms">
+        <p class="eyebrow">Tinggalkan ucapan &amp; konfirmasi kehadiran</p>
+        <label class="field"><span>Nama</span><input id="fNama" type="text" placeholder="Nama Bapak/Ibu/Saudara/i" autocomplete="name" maxlength="160" required></label>
         <label class="field"><span>Konfirmasi kehadiran</span>
           <select id="fHadir">
             <option value="Hadir">Hadir</option>
@@ -778,14 +779,22 @@ body.opened #gate{display:none!important}
             <option value="Masih belum pasti">Masih belum pasti</option>
           </select>
         </label>
-        <label class="field"><span>Ucapan &amp; doa</span><textarea id="fUcapan" placeholder="Tuliskan ucapan terbaik Anda..."></textarea></label>
-        <div class="btn-row" style="margin-top:6px">
-          <button class="btn" id="sendWa">
-            <svg width="17" height="17"><use href="#i-wa"></use></svg> Kirim via WhatsApp
-          </button>
-          
+        <label class="field"><span>Ucapan &amp; doa</span><textarea id="fUcapan" placeholder="Tuliskan ucapan terbaik Anda..." maxlength="1000" rows="4" required></textarea></label>
+        <label class="gb-honey" aria-hidden="true">Biarkan kosong<input id="wishCompany" type="text" tabindex="-1" autocomplete="off"></label>
+        <div class="gb-composer-tools"><button type="button" class="gb-emoji-toggle" id="wishEmojiToggle" aria-expanded="false" aria-controls="wishEmojiPicker">☺ Pilih emoji</button><span id="wishChars" class="gb-char-count">0 / 1.000</span></div>
+        <div id="wishEmojiPicker" class="gb-emoji-picker" aria-label="Pilihan emoji" hidden>
+          <button type="button" data-emoji="💖" aria-label="Tambahkan emoji cinta">💖</button><button type="button" data-emoji="🙏" aria-label="Tambahkan emoji doa">🙏</button><button type="button" data-emoji="🎉" aria-label="Tambahkan emoji perayaan">🎉</button><button type="button" data-emoji="✨" aria-label="Tambahkan emoji berkilau">✨</button><button type="button" data-emoji="🌸" aria-label="Tambahkan emoji bunga">🌸</button><button type="button" data-emoji="🕊️" aria-label="Tambahkan emoji merpati">🕊️</button>
         </div>
-        <p class="lead" style="font-size:13.5px;margin:14px 0 0;text-align:center">Ucapan yang dikirim melalui WhatsApp akan tercatat oleh keluarga ananda. <br>Mohon konfirmasi kehadiran melalui WhatsApp keluarga.</p>
+        <button class="btn gb-submit" id="sendWish" type="submit">Kirim Ucapan</button>
+        <p class="gb-help">Ucapan dan status kehadiran akan tampil di undangan dan dapat dibaca oleh tamu lain.</p>
+        <p class="gb-status" id="wishStatus" role="status" aria-live="polite"></p>
+        <button class="btn ghost gb-wa" id="sendWa" type="button"><svg width="17" height="17"><use href="#i-wa"></use></svg> Konfirmasi via WhatsApp</button>
+      </form>
+      <div class="gb-board" aria-label="Buku ucapan tamu">
+        <div class="gb-board-head"><div><h3>Ucapan &amp; doa dari tamu</h3><span id="wishCount">Memuat ucapan…</span></div><button type="button" class="gb-refresh" id="wishRefresh">Muat ulang</button></div>
+        <div id="wishList" aria-label="Daftar ucapan" aria-busy="true"><p class="gb-empty">Memuat ucapan dan doa…</p></div>
+        <p class="gb-status" id="wishFeedStatus" role="status" aria-live="polite"></p>
+        <button type="button" class="gb-more" id="wishMore" hidden>Lihat ucapan lainnya</button>
       </div>
     </div>
   </section>
@@ -1064,14 +1073,7 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
 
   /* --- 5. Dinding ucapan --- */
   function ucapan(){
-    var box = q("#wishList"); if(!box) return;
-    var html = '<p class="eyebrow">Ucapan yang telah masuk</p>';
-    if(!DATA.ucapan.length) html += '<p class="lead">Jadilah yang pertama mengirimkan doa.</p>';
-    DATA.ucapan.forEach(function(w){
-      html += '<div class="wish"><span class="av" style="background:url(\''+DATA.fotoUtama+'\') center/cover"></span>'+
-              '<span><span class="nm">'+w.nama+'</span><span class="tx">&ldquo;'+w.teks+'&rdquo;</span></span></div>';
-    });
-    box.innerHTML = html;
+    if(window.JesslynGuestbook)window.JesslynGuestbook.refresh();
   }
 
   /* --- 6. Tanda kasih --- */
@@ -1197,16 +1199,6 @@ Object.assign(DATA, JSON.parse(document.getElementById('invite-data').textConten
     var no = (DATA.waNomor||"").replace(/[^0-9]/g,"");
     if(!no){ alert("Nomor WhatsApp keluarga belum diisi. Buka bagian DATA lalu isi waNomor."); return; }
     window.open("https://wa.me/"+no+"?text="+encodeURIComponent(teks), "_blank");
-  });
-  var sendLocal = q("#sendLocal");
-  if(sendLocal) sendLocal.addEventListener("click", function(){
-    var u = dataUcapan();
-    DATA.ucapan.unshift({ nama: escapeText(u.nama), teks: escapeText(u.ucapan || (u.hadir + " — terima kasih atas undangannya.")) });
-    ucapan();
-    q("#fUcapan").value = "";
-    sendLocal.textContent = "Terima kasih \u2764";
-    setTimeout(function(){ sendLocal.textContent = "Tampilkan Ucapan di Perangkat Ini"; }, 2200);
-    var wl = q("#wishList"); if(wl && wl.scrollIntoView) wl.scrollIntoView({ behavior:"smooth", block:"center" });
   });
 
   /* --- 13. Bagikan --- */
@@ -1447,7 +1439,16 @@ async function inlineBundledAssets(markup){
  embedded.forEach(([path,data])=>{markup=markup.split(path).join(data)});
  return markup;
 }
-async function download(guest){try{apply();const root=document.documentElement.cloneNode(true);root.querySelector('#invite-data').textContent=JSON.stringify(DATA).replace(/</g,'\\u003c');root.querySelector('#inviteEditor').removeAttribute('open');root.querySelector('#photoViewer').removeAttribute('open');root.querySelector('#editorForm').replaceChildren();root.querySelector('#photoLarge').removeAttribute('src');root.querySelector('#editorStatus').textContent='';root.querySelector('body').className='locked';const gate=root.querySelector('#gate');gate.classList.remove('open');gate.style.display='';root.querySelector('#petals').replaceChildren();root.querySelectorAll('.rv').forEach(x=>x.classList.remove('in'));root.querySelector('#musicFab').classList.remove('spin');if(guest){root.querySelector('#editLaunch').remove();root.querySelector('#inviteEditor').remove();root.querySelector('#editorScript').textContent='('+guestGallery.toString()+')();'}showStatus('Menyiapkan file undangan…');const exportHTML=await inlineBundledAssets('<!DOCTYPE html>\n'+root.outerHTML);const blob=new Blob([exportHTML],{type:'text/html;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=guest?'undangan-baptisan-tamu.html':'undangan-ulang-tahun.html';a.style.display='none';document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},60000);dirty=false;showStatus('File berhasil diunduh. Gunakan file terbaru untuk dibagikan.')}catch(e){showStatus(e.message)}}
+function resetGuestbookExport(root){
+ const list=root.querySelector('#wishList');if(list)list.replaceChildren();
+ for(const id of ['wishStatus','wishFeedStatus','wishCount']){const node=root.querySelector('#'+id);if(node)node.textContent='';}
+ const style=root.querySelector('#guestbookStyle'),script=root.querySelector('#guestbookScript');
+ if(style)style.setAttribute('href',new URL(style.getAttribute('href'),document.baseURI).href);
+ if(script)script.setAttribute('src',new URL(script.getAttribute('src'),document.baseURI).href);
+ for(const id of ['fNama','fUcapan','wishCompany']){const field=root.querySelector('#'+id);if(field){field.value='';field.removeAttribute('value');if(field.tagName==='TEXTAREA')field.textContent='';}}
+ root.querySelector('#wishEmojiPicker')?.setAttribute('hidden','');root.querySelector('#wishMore')?.setAttribute('hidden','');
+}
+async function download(guest){try{apply();const root=document.documentElement.cloneNode(true);resetGuestbookExport(root);root.querySelector('#invite-data').textContent=JSON.stringify(DATA).replace(/</g,'\\u003c');root.querySelector('#inviteEditor').removeAttribute('open');root.querySelector('#photoViewer').removeAttribute('open');root.querySelector('#editorForm').replaceChildren();root.querySelector('#photoLarge').removeAttribute('src');root.querySelector('#editorStatus').textContent='';root.querySelector('body').className='locked';const gate=root.querySelector('#gate');gate.classList.remove('open');gate.style.display='';root.querySelector('#petals').replaceChildren();root.querySelectorAll('.rv').forEach(x=>x.classList.remove('in'));root.querySelector('#musicFab').classList.remove('spin');if(guest){root.querySelector('#editLaunch').remove();root.querySelector('#inviteEditor').remove();root.querySelector('#editorScript').textContent='('+guestGallery.toString()+')();'}showStatus('Menyiapkan file undangan…');const exportHTML=await inlineBundledAssets('<!DOCTYPE html>\n'+root.outerHTML);const blob=new Blob([exportHTML],{type:'text/html;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=guest?'undangan-baptisan-tamu.html':'undangan-ulang-tahun.html';a.style.display='none';document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},60000);dirty=false;showStatus('File berhasil diunduh. Gunakan file terbaru untuk dibagikan.')}catch(e){showStatus(e.message)}}
 $('downloadEditor').onclick=()=>download(false);$('downloadGuest').onclick=()=>download(true);
 window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
 function guestGallery(){let index=0,figures=[];const viewer=document.getElementById('photoViewer');function show(i){figures=[...document.querySelectorAll('#galleryGrid figure')].filter(f=>f.querySelector('img'));if(!figures.length)return;index=(i+figures.length)%figures.length;const img=figures[index].querySelector('img');document.getElementById('photoLarge').src=img.src;document.getElementById('photoLarge').alt=img.alt;document.getElementById('photoCaption').textContent=img.alt;if(!viewer.open)viewer.showModal()}document.querySelectorAll('#galleryGrid figure').forEach(f=>{if(!f.querySelector('img'))return;f.tabIndex=0;f.setAttribute('role','button');f.setAttribute('aria-label','Perbesar '+f.querySelector('img').alt);f.onclick=()=>{figures=[...document.querySelectorAll('#galleryGrid figure')].filter(x=>x.querySelector('img'));show(figures.indexOf(f))};f.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f.click()}}});document.getElementById('photoClose').onclick=()=>viewer.close();document.getElementById('photoPrev').onclick=()=>show(index-1);document.getElementById('photoNext').onclick=()=>show(index+1);viewer.onkeydown=e=>{if(e.key==='ArrowLeft')show(index-1);if(e.key==='ArrowRight')show(index+1)}}
@@ -1467,7 +1468,7 @@ async function syncRemoteGuest(){
  }catch(e){console.info('Mode editor memakai data bawaan (offline).');}
 }
 function buildGuestHTML(){
- const root=document.documentElement.cloneNode(true);
+ const root=document.documentElement.cloneNode(true);resetGuestbookExport(root);
  root.querySelector('#invite-data').textContent=JSON.stringify(DATA).replace(/</g,String.fromCharCode(92)+'u003c');
  root.querySelector('#inviteEditor')?.remove();
  root.querySelector('#editLaunch')?.remove();
@@ -1522,5 +1523,7 @@ syncRemoteGuest();
 
 
 
-<a href="blob:null/129e01a6-fb5b-43e9-aa1f-2ed578e37770" download="undangan-baptisan-tamu.html" style="display: none;"></a></body></html>
+<a href="blob:null/129e01a6-fb5b-43e9-aa1f-2ed578e37770" download="undangan-baptisan-tamu.html" style="display: none;"></a><script id="guestbookScript" src="assets/guestbook.js?v=20261030-1" defer></script>
+</body></html>
+
 
