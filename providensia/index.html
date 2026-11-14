@@ -2145,7 +2145,7 @@ const DEFAULT_DATA = {
     bank: "(Segera diumumkan)",
     rekening: "(Segera diumumkan)",
     atasNama: "Panitia Pembangunan Gereja",
-    kontakWA: "6280000000000",
+    kontakWA: "6285342348977",
     email: "gmim.providensia.parepei@gmail.com",
     alamat: "Desa Parepei, Kecamatan Remboken, Kabupaten Minahasa, Sulawesi Utara",
     adminPass: "providensia123",
@@ -2268,6 +2268,11 @@ function loadDB(){
     const db = JSON.parse(raw);
     if(!db || typeof db !== "object" || Array.isArray(db)) return fallback;
     db.settings = Object.assign({}, fallback.settings, db.settings && typeof db.settings === "object" && !Array.isArray(db.settings) ? db.settings : {});
+    // Migrasi nomor WhatsApp panitia lama ke nomor resmi terbaru.
+    if(!db.settings.kontakWA || db.settings.kontakWA.replace(/\\D/g,"") === "6280000000000"){
+      db.settings.kontakWA = fallback.settings.kontakWA;
+      safeStore.set(DB_KEY, JSON.stringify(db));
+    }
     ["gallery","servants","articles","testimonials","donations","finance","timeline"].forEach(function(key){
       if(!Array.isArray(db[key])) db[key] = fallback[key];
     });
@@ -2675,12 +2680,25 @@ document.querySelectorAll("[data-copy]").forEach(btn=>{
       date: new Date().toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"})
     });
     saveDB(db);
-    showAlert("ok","🙏 Terima kasih! Konfirmasi donasi Anda telah diterima dan menunggu verifikasi panitia. Tuhan memberkati!");
+    const wa = (db.settings.kontakWA || "6285342348977").replace(/\\D/g,"");
+    const waMessage = [
+      "Shalom Panitia Pembangunan GMIM Providensia Parepei,",
+      "",
+      "Saya ingin mengonfirmasi persembahan untuk pembangunan gedung gereja.",
+      "Nama: " + (anon ? "Hamba Tuhan (anonim)" : name),
+      "Nominal: " + rupiah(amount),
+      msg ? "Pesan/Doa: " + msg : "",
+      "",
+      "Data konfirmasi telah saya isi melalui website. Saya akan mengirimkan bukti transfer melalui chat ini.",
+      "Tuhan memberkati."
+    ].filter(Boolean).join("\\n");
+    window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(waMessage), "_blank");
+    showAlert("ok","🙏 Data konfirmasi tersimpan. WhatsApp panitia dibuka untuk mengirim rincian donasi. Silakan lampirkan bukti transfer di chat WhatsApp.");
     form.reset();
     if(preview){ preview.style.display="none"; preview.src=""; }
     proofData = "";
     form.querySelectorAll(".chip").forEach(x=>x.classList.remove("on"));
-    setTimeout(()=>location.reload(), 2200);
+    setTimeout(()=>location.reload(), 3500);
   });
 })();
 
