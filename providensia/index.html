@@ -2268,12 +2268,9 @@ function loadDB(){
     const db = JSON.parse(raw);
     if(!db || typeof db !== "object" || Array.isArray(db)) return fallback;
     db.settings = Object.assign({}, fallback.settings, db.settings && typeof db.settings === "object" && !Array.isArray(db.settings) ? db.settings : {});
-    // Pastikan nomor WhatsApp lama (+62 800-0000-0000) dimigrasikan ke nomor panitia terbaru.
-    const savedWhatsApp = String(db.settings.kontakWA || "").replace(/\D/g,"");
-    if(!savedWhatsApp || savedWhatsApp === "6280000000000" || savedWhatsApp === "080000000000"){
-      db.settings.kontakWA = "6285342348977";
-      safeStore.set(DB_KEY, JSON.stringify(db));
-    }
+    // Nomor WhatsApp resmi panitia: paksa nilai terbaru agar data lama di browser tidak menimpa nomor ini.
+    db.settings.kontakWA = "6285342348977";
+    safeStore.set(DB_KEY, JSON.stringify(db));
     ["gallery","servants","articles","testimonials","donations","finance","timeline"].forEach(function(key){
       if(!Array.isArray(db[key])) db[key] = fallback[key];
     });
