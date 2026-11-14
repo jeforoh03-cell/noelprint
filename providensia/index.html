@@ -2269,7 +2269,7 @@ function loadDB(){
     if(!db || typeof db !== "object" || Array.isArray(db)) return fallback;
     db.settings = Object.assign({}, fallback.settings, db.settings && typeof db.settings === "object" && !Array.isArray(db.settings) ? db.settings : {});
     // Migrasi nomor WhatsApp panitia lama ke nomor resmi terbaru.
-    if(!db.settings.kontakWA || db.settings.kontakWA.replace(/\\D/g,"") === "6280000000000"){
+    if(!db.settings.kontakWA || db.settings.kontakWA.replace(/\D/g,"") === "6280000000000"){
       db.settings.kontakWA = fallback.settings.kontakWA;
       safeStore.set(DB_KEY, JSON.stringify(db));
     }
@@ -2680,7 +2680,7 @@ document.querySelectorAll("[data-copy]").forEach(btn=>{
       date: new Date().toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"})
     });
     saveDB(db);
-    const wa = (db.settings.kontakWA || "6285342348977").replace(/\\D/g,"");
+    const wa = (db.settings.kontakWA || "6285342348977").replace(/\D/g,"");
     const waMessage = [
       "Shalom Panitia Pembangunan GMIM Providensia Parepei,",
       "",
@@ -2691,7 +2691,7 @@ document.querySelectorAll("[data-copy]").forEach(btn=>{
       "",
       "Data konfirmasi telah saya isi melalui website. Saya akan mengirimkan bukti transfer melalui chat ini.",
       "Tuhan memberkati."
-    ].filter(Boolean).join("\\n");
+    ].filter(Boolean).join("\n");
     window.open("https://wa.me/" + wa + "?text=" + encodeURIComponent(waMessage), "_blank");
     showAlert("ok","🙏 Data konfirmasi tersimpan. WhatsApp panitia dibuka untuk mengirim rincian donasi. Silakan lampirkan bukti transfer di chat WhatsApp.");
     form.reset();
