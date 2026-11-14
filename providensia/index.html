@@ -1692,17 +1692,25 @@ html:not(.site-ready) #page-pembangunan .tab-panel{display:block;margin-bottom:2
       <div class="rek-card">
         <span class="eyebrow" style="color:#e8c874">Dukungan Pembangunan Gereja</span>
         <h2 style="color:#fff;font-size:1.6rem;margin:.4rem 0 1rem">Rekening Pembangunan</h2>
-        <div class="rek-row">
-          <div><small>Bank</small><b data-set="bank">(Segera diumumkan)</b></div>
-          <button class="copy-btn" data-copy="[data-set='bank']">Salin</button>
+        <div style="padding:.8rem 0 1.1rem;border-bottom:1px solid rgba(255,255,255,.2)">
+          <h3 style="color:var(--gold-2);font-size:1.05rem;margin:0 0 .65rem">BCA · Rekening Ketua</h3>
+          <div class="rek-row">
+            <div><small>Nomor Rekening</small><b>1700476266</b></div>
+            <button type="button" class="copy-btn" data-copy-value="1700476266" aria-label="Salin nomor rekening BCA">Salin Nomor</button>
+          </div>
+          <div class="rek-row"><div><small>Atas Nama</small><b>MARIO HANI REPI</b></div></div>
+          <div class="rek-row"><div><small>Kantor Cabang</small><b>KCP Tomohon</b></div></div>
         </div>
-        <div class="rek-row">
-          <div><small>Nomor Rekening</small><b data-set="rekening">(Segera diumumkan)</b></div>
-          <button class="copy-btn" data-copy="[data-set='rekening']">Salin</button>
+        <div style="padding:1rem 0 1.1rem;border-bottom:1px solid rgba(255,255,255,.2)">
+          <h3 style="color:var(--gold-2);font-size:1.05rem;margin:0 0 .65rem">BRI Simpedes · Panitia Pembangunan</h3>
+          <div class="rek-row">
+            <div><small>Nomor Rekening</small><b>3337-01-064599-53-6</b></div>
+            <button type="button" class="copy-btn" data-copy-value="333701064599536" aria-label="Salin nomor rekening BRI">Salin Nomor</button>
+          </div>
+          <div class="rek-row"><div><small>Atas Nama</small><b>PANITIA PEMBANGUNAN GEDUNG GEREJA PROVIDENSIA</b></div></div>
+          <div class="rek-row"><div><small>Kantor Unit</small><b>Unit Kawangkoan Tondano</b></div></div>
         </div>
-        <div class="rek-row">
-          <div><small>Atas Nama</small><b data-set="atasNama">Panitia Pembangunan Gereja</b></div>
-        </div>
+        <p style="margin:.9rem 0 0;color:#f5dfaa;font-size:.82rem">Rekening BSG atas nama Ketua akan ditambahkan setelah data nomor rekening dan nama pemilik diterima.</p>
         <div class="qr-box" style="margin-top:1.4rem">
           <svg viewbox="0 0 570 570" preserveaspectratio="xMidYMid slice" role="img" aria-label="QR Code pembayaran pembangunan" data-asset="qr-pembangunan.png" class="site-image"><use href="#providensia-photo-21" width="570" height="570"></use></svg>
           <div style="font-weight:800;margin-top:.5rem">Scan QRIS / QR Pembayaran</div>
@@ -3246,5 +3254,42 @@ function bindSettingsRefresh(){
 
 
 </script>
+
+<script id="providensia-copy-bank-accounts">
+(function () {
+  'use strict';
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest('[data-copy-value]');
+    if (!button) return;
+    var value = button.getAttribute('data-copy-value');
+    if (!value) return;
+    function feedback() {
+      var original = button.textContent;
+      button.textContent = 'Tersalin ✓';
+      window.setTimeout(function () { button.textContent = original; }, 1800);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(value).then(feedback).catch(function () {
+        var field = document.createElement('textarea');
+        field.value = value;
+        field.style.position = 'fixed';
+        field.style.opacity = '0';
+        document.body.appendChild(field);
+        field.select();
+        try { if (document.execCommand('copy')) feedback(); } finally { field.remove(); }
+      });
+    } else {
+      var field = document.createElement('textarea');
+      field.value = value;
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.appendChild(field);
+      field.select();
+      try { if (document.execCommand('copy')) feedback(); } finally { field.remove(); }
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
