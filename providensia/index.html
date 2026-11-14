@@ -2268,9 +2268,10 @@ function loadDB(){
     const db = JSON.parse(raw);
     if(!db || typeof db !== "object" || Array.isArray(db)) return fallback;
     db.settings = Object.assign({}, fallback.settings, db.settings && typeof db.settings === "object" && !Array.isArray(db.settings) ? db.settings : {});
-    // Migrasi nomor WhatsApp panitia lama ke nomor resmi terbaru.
-    if(!db.settings.kontakWA || db.settings.kontakWA.replace(/\D/g,"") === "6280000000000"){
-      db.settings.kontakWA = fallback.settings.kontakWA;
+    // Pastikan nomor WhatsApp lama (+62 800-0000-0000) dimigrasikan ke nomor panitia terbaru.
+    const savedWhatsApp = String(db.settings.kontakWA || "").replace(/\D/g,"");
+    if(!savedWhatsApp || savedWhatsApp === "6280000000000" || savedWhatsApp === "080000000000"){
+      db.settings.kontakWA = "6285342348977";
       safeStore.set(DB_KEY, JSON.stringify(db));
     }
     ["gallery","servants","articles","testimonials","donations","finance","timeline"].forEach(function(key){
